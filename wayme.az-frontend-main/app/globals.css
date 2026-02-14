@@ -1,0 +1,131 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --background: #091E3E;
+    --foreground: #ffffff;
+    --card-bg: #102A4D;
+    --border: rgba(255, 255, 255, 0.1);
+    --radius: 2rem;
+  }
+
+  body {
+    @apply bg-[var(--background)] text-[var(--foreground)] antialiased tracking-tight;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#2B7FFF] via-[#AD46FF] to-[#F6339A];
+  }
+}
+
+:root {
+  --primary: #2B7FFF;
+}
+
+body {
+  @apply bg-[#091E3E] text-white;
+  font-family: "Inter", sans-serif;
+  outline: none;
+}
+
+.font-arimo {
+  font-family: "Arimo", sans-serif;
+}
+
+.linear-gradient-bg {
+  background: linear-gradient(90deg, #2B7FFF, #AD46FF, #F6339A);
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes pulse-slow {
+
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 3s ease-in-out infinite;
+}
+
+.glass-card {
+  @apply bg-[#102A4D]/40 backdrop-blur-md border border-white/10;
+}
+
+@keyframes blob-diagonal {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(-40vw, 30vh);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes blob-diagonal-reverse {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(40vw, -30vh);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+.animate-blob-diagonal {
+  animation: blob-diagonal 12s ease-in-out infinite;
+}
+
+.animate-blob-diagonal-reverse {
+  animation: blob-diagonal-reverse 12s ease-in-out infinite;
+}
+
+/* Custom Scrollbar for Modal */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #2B7FFF, #AD46FF);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #3D8FFF, #BD56FF);
+}
