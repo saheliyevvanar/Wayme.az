@@ -17,7 +17,7 @@ const Page = () => {
   useEffect(() => {
     const fetchUserCount = async () => {
       try {
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080/api";
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://waymeaz-production.up.railway.app/api";
         const response = await fetch(`${apiUrl}/statistics/user-count`);
         if (response.ok) {
           const count = await response.json();
@@ -42,7 +42,7 @@ const Page = () => {
 
   const handleStartTest = async () => {
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080/api";
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://waymeaz-production.up.railway.app/api";
       const response = await fetch(`${apiUrl}/statistics/increment-users`, {
         method: "POST",
       });
