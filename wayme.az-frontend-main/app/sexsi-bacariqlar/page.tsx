@@ -33,7 +33,7 @@ export default function PersonalSkillsPage() {
                     const data = JSON.parse(savedData);
                     if (data.skills && Array.isArray(data.skills)) {
                         // Remove duplicates from saved skills
-                        const uniqueSkills = [...new Set(data.skills)];
+                        const uniqueSkills = [...new Set(data.skills as string[])];
                         setSkills(uniqueSkills);
                     }
                     if (data.id) {
