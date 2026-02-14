@@ -17,7 +17,8 @@ const Page = () => {
   useEffect(() => {
     const fetchUserCount = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/statistics/user-count");
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080/api";
+        const response = await fetch(`${apiUrl}/statistics/user-count`);
         if (response.ok) {
           const count = await response.json();
           setUserCount(count);
@@ -41,7 +42,8 @@ const Page = () => {
 
   const handleStartTest = async () => {
     try {
-      const response = await fetch("http://localhost:8080/api/statistics/increment-users", {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080/api";
+      const response = await fetch(`${apiUrl}/statistics/increment-users`, {
         method: "POST",
       });
       if (response.ok) {
