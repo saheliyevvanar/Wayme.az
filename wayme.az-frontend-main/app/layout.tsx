@@ -22,9 +22,6 @@ export const metadata: Metadata = {
     default: "Wayme.az - AI ilə İdeal Karyeranızı Kəşf Edin",
     template: "%s | Wayme.az",
   },
-  icons: {
-    icon: "/favicon.ico",
-  },
   description:
     "Wayme.az - Süni intellekt əsaslı karyera seçim platforması. Sadə suallara cavab verərək sizə ən uyğun peşəni, iş sahəsini və karyera yolunu kəşf edin. Gələcəyinizi formalaşdırın!",
   keywords: [
