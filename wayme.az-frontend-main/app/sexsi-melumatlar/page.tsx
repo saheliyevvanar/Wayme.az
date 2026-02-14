@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import Footer from "../../Components/Layout/Footer";
 import { User, Calendar, ChevronLeft, ChevronRight, X, Loader2 } from "lucide-react";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080/api";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://waymeaz-production.up.railway.app/api";
 
 export default function PersonalInfoPage() {
     const router = useRouter();
