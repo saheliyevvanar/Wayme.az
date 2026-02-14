@@ -1,0 +1,17 @@
+{
+  "name": "WAYME.AZ - Karyera Yönləndirmə Platforması",
+  "short_name": "WAYME.AZ",
+  "description": "Karyera yönləndirmə və test platforması",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#091E3E",
+  "theme_color": "#3B82F6",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64",
+      "type": "image/x-icon"
+    }
+  ]
+}
