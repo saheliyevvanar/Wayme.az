@@ -69,6 +69,10 @@ INSERT INTO career_directions (direction_id, title, description, icon, color, bg
 SELECT 'education', 'Təhsil və Məhsuliyyət', 'Müəllimlər və Kurslar', 'BookOpen', 'text-orange-400', 'bg-orange-400/10', 'border-orange-400/20', NOW()
 WHERE NOT EXISTS (SELECT 1 FROM career_directions WHERE direction_id = 'education');
 
+INSERT INTO career_directions (direction_id, title, description, icon, color, bg, border, created_at)
+SELECT 'logistics', 'Logistika və Texhizat', 'Supply Chain və Logistics', 'ShieldCheck', 'text-cyan-400', 'bg-cyan-400/10', 'border-cyan-400/20', NOW()
+WHERE NOT EXISTS (SELECT 1 FROM career_directions WHERE direction_id = 'logistics');
+
 -- Insert IT Sub-Categories
 INSERT INTO career_subcategories (direction_id, sub_category_id, title, skills, description, icon, created_at)
 SELECT (SELECT id FROM career_directions WHERE direction_id = 'it'), 'frontend', 'Frontend proqramçı', 'HTML, CSS, JavaScript, React', 'İstifadəçinin gördüyü sayt və tətbiq hissəsini hazırlayır.', 'Code2', NOW()
@@ -208,3 +212,20 @@ WHERE NOT EXISTS (SELECT 1 FROM career_subcategories WHERE sub_category_id = 'in
 INSERT INTO career_subcategories (direction_id, sub_category_id, title, skills, description, icon, created_at)
 SELECT (SELECT id FROM career_directions WHERE direction_id = 'education'), 'academic', 'Akademik Mentoru', 'Mentoring, Coaching', 'Tələbələri və praktikantları müşavirə edir.', 'Users', NOW()
 WHERE NOT EXISTS (SELECT 1 FROM career_subcategories WHERE sub_category_id = 'academic');
+
+-- Insert Logistics Sub-Categories
+INSERT INTO career_subcategories (direction_id, sub_category_id, title, skills, description, icon, created_at)
+SELECT (SELECT id FROM career_directions WHERE direction_id = 'logistics'), 'logistics-specialist', 'Logistika mütəxəssisi', 'Logistics, Planning', 'Daşımaları planlaşdırır.', 'ShieldCheck', NOW()
+WHERE NOT EXISTS (SELECT 1 FROM career_subcategories WHERE sub_category_id = 'logistics-specialist');
+
+INSERT INTO career_subcategories (direction_id, sub_category_id, title, skills, description, icon, created_at)
+SELECT (SELECT id FROM career_directions WHERE direction_id = 'logistics'), 'supply-chain', 'Təchizat zənciri', 'Analytics, ERP', 'Təchizat proseslərini optimallaşdırır.', 'ShieldCheck', NOW()
+WHERE NOT EXISTS (SELECT 1 FROM career_subcategories WHERE sub_category_id = 'supply-chain');
+
+INSERT INTO career_subcategories (direction_id, sub_category_id, title, skills, description, icon, created_at)
+SELECT (SELECT id FROM career_directions WHERE direction_id = 'logistics'), 'coordinator', 'Koordinator', 'Coordination', 'Əməliyyatları koordinasiya edir.', 'ShieldCheck', NOW()
+WHERE NOT EXISTS (SELECT 1 FROM career_subcategories WHERE sub_category_id = 'coordinator');
+
+INSERT INTO career_subcategories (direction_id, sub_category_id, title, skills, description, icon, created_at)
+SELECT (SELECT id FROM career_directions WHERE direction_id = 'logistics'), 'procurement', 'Satınalma mütəxəssisi', 'Procurement', 'Satınalma proseslərini həyata keçirir.', 'ShieldCheck', NOW()
+WHERE NOT EXISTS (SELECT 1 FROM career_subcategories WHERE sub_category_id = 'procurement');
