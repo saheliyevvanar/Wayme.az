@@ -2,8 +2,10 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Footer from "../../../Components/Layout/Footer";
-import { ArrowLeft, Check } from "lucide-react";
+import { ArrowLeft, Check, Loader2 } from "lucide-react";
 import { professions } from "../professionsData";
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://waymeaz-production.up.railway.app/api";
 
 // Map icon string names to lucide-react components
 import {
@@ -41,6 +43,7 @@ export default function SubCategoryPage({ params }: { params: Promise<{ category
 
 
     const [selectedSubCategory, setSelectedSubCategory] = useState<string | null>(null);
+    const [isSaving, setIsSaving] = useState(false);
 
     // If category not found, maybe redirect
     useEffect(() => {
@@ -86,8 +89,47 @@ export default function SubCategoryPage({ params }: { params: Promise<{ category
         }
     };
 
-    const handleNext = () => {
-        router.push("/test");
+    const handleNext = async () => {
+        setIsSaving(true);
+        
+        try {
+            // Get personalInfoId from localStorage
+            const personalInfoData = localStorage.getItem("personalInfo");
+            const personalInfoId = personalInfoData ? JSON.parse(personalInfoData).id : null;
+
+            if (personalInfoId && selectedSubCategory) {
+                // Save career direction to backend
+                const response = await fetch(`${API_BASE_URL}/career-directions/save`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        personalInfoId: personalInfoId,
+                        directionId: categoryId,
+                        subCategoryId: selectedSubCategory
+                    }),
+                });
+
+                if (!response.ok) {
+                    console.error("Failed to save career direction");
+                }
+            }
+
+            // Save to localStorage for later use
+            localStorage.setItem("careerDirection", JSON.stringify({
+                category: categoryId,
+                subCategory: selectedSubCategory
+            }));
+
+            router.push("/test");
+        } catch (error) {
+            console.error("Error saving career direction:", error);
+            // Still navigate even if save fails
+            router.push("/test");
+        } finally {
+            setIsSaving(false);
+        }
     };
 
     if (!categoryData) return null; // Avoid rendering if invalid
@@ -185,9 +227,15 @@ export default function SubCategoryPage({ params }: { params: Promise<{ category
 
                             <button
                                 onClick={handleNext}
-                                className="flex-1 h-[60px] rounded-2xl bg-gradient-to-r from-[#2B7FFF] via-[#AD46FF] to-[#F6339A] text-white font-bold text-lg hover:shadow-lg hover:shadow-purple-500/20 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center"
+                                disabled={isSaving}
+                                className="flex-1 h-[60px] rounded-2xl bg-gradient-to-r from-[#2B7FFF] via-[#AD46FF] to-[#F6339A] text-white font-bold text-lg hover:shadow-lg hover:shadow-purple-500/20 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center disabled:opacity-70 disabled:cursor-not-allowed"
                             >
-                                {selectedSubCategory ? "Seçilmiş istiqamətlə testə başla" : "Seçmədən testə başla"}
+                                {isSaving ? (
+                                    <>
+                                        <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                                        Saxlanılır...
+                                    </>
+                                ) : selectedSubCategory ? "Seçilmiş istiqamətlə testə başla" : "Seçmədən testə başla"}
                             </button>
                         </div>
                     </div>
