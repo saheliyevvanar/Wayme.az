@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import java.util.List;
 
 @Entity
 @Table(name = "personal_info")
@@ -37,6 +38,9 @@ public class PersonalInfo {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "personalInfo", cascade = CascadeType.ALL)
+    private List<UserCareerDirection> userCareerDirections;
 
     @PrePersist
     protected void onCreate() {

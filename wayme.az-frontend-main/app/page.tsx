@@ -17,11 +17,15 @@ const Page = () => {
   useEffect(() => {
     const fetchUserCount = async () => {
       try {
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://waymeaz-production.up.railway.app/api";
-        const response = await fetch(`${apiUrl}/statistics/user-count`);
-        if (response.ok) {
-          const count = await response.json();
-          setUserCount(count);
+        const isLocalhost = typeof window !== 'undefined' && window.location.hostname === 'localhost';
+        
+        if (!isLocalhost) {
+          const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://waymeaz-production.up.railway.app/api";
+          const response = await fetch(`${apiUrl}/statistics/user-count`);
+          if (response.ok) {
+            const count = await response.json();
+            setUserCount(count);
+          }
         }
       } catch (error) {
         const saved = localStorage.getItem("testUserCount");
@@ -42,14 +46,21 @@ const Page = () => {
 
   const handleStartTest = async () => {
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://waymeaz-production.up.railway.app/api";
-      const response = await fetch(`${apiUrl}/statistics/increment-users`, {
-        method: "POST",
-      });
-      if (response.ok) {
-        const newCount = await response.json();
-        setUserCount(newCount);
+      const isLocalhost = typeof window !== 'undefined' && window.location.hostname === 'localhost';
+      
+      if (!isLocalhost) {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://waymeaz-production.up.railway.app/api";
+        const response = await fetch(`${apiUrl}/statistics/increment-users`, {
+          method: "POST",
+        });
+        if (response.ok) {
+          const newCount = await response.json();
+          setUserCount(newCount);
+        } else {
+          setUserCount((prev) => prev + 1);
+        }
       } else {
+        // Local dev - just increment
         setUserCount((prev) => prev + 1);
       }
     } catch (error) {

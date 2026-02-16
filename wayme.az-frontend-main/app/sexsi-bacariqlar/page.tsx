@@ -1,19 +1,13 @@
 "use client";
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Footer from "../../Components/Layout/Footer";
-import { ArrowLeft, X, Loader2, StopCircle } from "lucide-react";
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://waymeaz-production.up.railway.app/api";
+import { ArrowLeft, X } from "lucide-react";
 
 export default function PersonalSkillsPage() {
     const router = useRouter();
     const [skills, setSkills] = useState<string[]>([]);
     const [inputValue, setInputValue] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
-    const [apiError, setApiError] = useState<string | null>(null);
-    const [skillsId, setSkillsId] = useState<number | null>(null);
-    const [isHydrated, setIsHydrated] = useState(false);
     const [easyChoices, setEasyChoices] = useState<string[]>([
         "Problemləri həll etmə", "Kommunikasiya", "Komanda işi",
         "Liderlik", "Analitik düşüncə", "Yaradıcılıq",
@@ -24,61 +18,32 @@ export default function PersonalSkillsPage() {
         "İngilis dili", "Mətn yazma"
     ]);
 
-    // Load from localStorage on mount (runs before render)
-    useLayoutEffect(() => {
-        if (typeof window !== 'undefined') {
-            const savedData = localStorage.getItem("personalSkills");
-            if (savedData) {
-                try {
-                    const data = JSON.parse(savedData);
-                    if (data.skills && Array.isArray(data.skills)) {
-                        // Remove duplicates from saved skills
-                        const uniqueSkills = [...new Set(data.skills as string[])];
-                        setSkills(uniqueSkills);
-                    }
-                    if (data.id) {
-                        setSkillsId(data.id);
-                    }
-                } catch (error) {
-                    console.error("Error loading from localStorage:", error);
-                    // Clear corrupted localStorage
-                    localStorage.removeItem("personalSkills");
+    // Load from localStorage on mount
+    useEffect(() => {
+        const savedData = localStorage.getItem("personalSkills");
+        if (savedData) {
+            try {
+                const data = JSON.parse(savedData);
+                if (data.skills && Array.isArray(data.skills)) {
+                    setSkills(data.skills);
                 }
+            } catch (error) {
+                console.error("Error loading from localStorage:", error);
             }
-            setIsHydrated(true);
         }
     }, []);
 
     // Save to localStorage whenever skills change
     useEffect(() => {
-        if (isHydrated) {
-            const data = {
-                id: skillsId,
-                skills,
-            };
-            localStorage.setItem("personalSkills", JSON.stringify(data));
-        }
-    }, [skills, skillsId, isHydrated]);
-
-    // Testi dayandır - bütün məlumatları sil
-    const handleStopTest = () => {
-        // localStorage-dən bütün test məlumatlarını sil
-        localStorage.removeItem("personalSkills");
-        localStorage.removeItem("personalInfo");
-        
-        // State-i sıfırla
-        setSkills([]);
-        setSkillsId(null);
-        setApiError(null);
-        
-        // Ana səhifəyə qayıt
-        router.push("/");
-    };
+        const data = {
+            skills,
+        };
+        localStorage.setItem("personalSkills", JSON.stringify(data));
+    }, [skills]);
 
     const handleAddSkill = () => {
-        const trimmedValue = inputValue.trim();
-        if (trimmedValue && !skills.includes(trimmedValue)) {
-            setSkills([...skills, trimmedValue]);
+        if (inputValue.trim() && !skills.includes(inputValue.trim())) {
+            setSkills([...skills, inputValue.trim()]);
             setInputValue("");
         }
     };
@@ -101,99 +66,14 @@ export default function PersonalSkillsPage() {
         setSkills(skills.filter((s) => s !== skill));
     };
 
-    // API call to save personal skills
-    const savePersonalSkills = async () => {
-        const requestData = {
-            skills: skills,
-        };
+    const handleStopTest = () => {
+        // Clear all stored data for the test
+        localStorage.removeItem("personalInfo");
+        localStorage.removeItem("personalSkills");
 
-        try {
-            let response;
-            if (skillsId) {
-                // Update existing record
-                response = await fetch(`${API_BASE_URL}/personal-skills/${skillsId}`, {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(requestData),
-                });
-            } else {
-                // Create new record
-                response = await fetch(`${API_BASE_URL}/personal-skills`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(requestData),
-                });
-            }
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || "Xəta baş verdi");
-            }
-
-            const data = await response.json();
-            setSkillsId(data.id);
-
-            // Update localStorage with the new ID
-            const savedData = {
-                id: data.id,
-                skills: data.skills,
-            };
-            localStorage.setItem("personalSkills", JSON.stringify(savedData));
-
-            return true;
-        } catch (error) {
-            // If API fails, save to localStorage as fallback
-            console.warn("API xətası, localStorage-ə saxlanılır:", error);
-            
-            // Generate a temporary ID if not exists
-            if (!skillsId) {
-                const tempId = Math.floor(Math.random() * 100000);
-                setSkillsId(tempId);
-                
-                const savedData = {
-                    id: tempId,
-                    skills: skills,
-                };
-                localStorage.setItem("personalSkills", JSON.stringify(savedData));
-            } else {
-                const savedData = {
-                    id: skillsId,
-                    skills: skills,
-                };
-                localStorage.setItem("personalSkills", JSON.stringify(savedData));
-            }
-            
-            // Don't throw error - allow user to continue
-            return true;
-        }
-    };
-
-    const handleNext = async () => {
-        if (skills.length < 3) {
-            setApiError("Minimum 3 bacarıq seçməlisiniz");
-            return;
-        }
-
-        setIsLoading(true);
-        setApiError(null);
-
-        try {
-            await savePersonalSkills();
-            // TODO: Navigate to step 3 when it's created
-            alert("Məlumatlar uğurla saxlanıldı! Növbəti addım tezliklə əlavə olunacaq");
-        } catch (error) {
-            if (error instanceof Error) {
-                setApiError(error.message);
-            } else {
-                setApiError("Xəta baş verdi");
-            }
-        } finally {
-            setIsLoading(false);
-        }
+        // Reset local state for this step
+        setSkills([]);
+        setInputValue("");
     };
 
     return (
@@ -213,14 +93,14 @@ export default function PersonalSkillsPage() {
                         <h1 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
                             İş istiqamətinin müəyyən edilməsi
                         </h1>
-                        <span className="text-gray-400 font-medium">Addım 2/6</span>
+                        <span className="text-gray-400 font-medium">Addım 2/4</span>
                     </div>
 
                     {/* Progress Bar */}
                     <div className="w-full bg-white/10 rounded-full h-2 mb-10 overflow-hidden">
                         <div
                             className="h-full bg-white rounded-full transition-all duration-500 ease-out"
-                            style={{ width: "33.33%" }}
+                            style={{ width: "50%" }}
                         />
                     </div>
 
@@ -260,8 +140,8 @@ export default function PersonalSkillsPage() {
                         {/* Selected Skills Display (if any) */}
                         {skills.length > 0 && (
                             <div className="flex flex-wrap gap-2 animate-in fade-in slide-in-from-top-4 duration-300">
-                                {skills.map((skill, index) => (
-                                    <div key={`${skill}-${index}`} className="flex items-center gap-2 bg-gradient-to-r from-[#2B7FFF]/20 to-[#AD46FF]/20 border border-blue-400/30 px-4 py-2 rounded-xl">
+                                {skills.map((skill) => (
+                                    <div key={skill} className="flex items-center gap-2 bg-gradient-to-r from-[#2B7FFF]/20 to-[#AD46FF]/20 border border-blue-400/30 px-4 py-2 rounded-xl">
                                         <span className="text-sm font-medium text-white">{skill}</span>
                                         <button
                                             onClick={() => removeSkill(skill)}
@@ -292,13 +172,6 @@ export default function PersonalSkillsPage() {
                         </div>
                     </div>
 
-                    {/* API Error Display */}
-                    {apiError && (
-                        <div className="mt-6 p-4 bg-red-500/10 border border-red-500/30 rounded-xl">
-                            <p className="text-red-400 text-sm">{apiError}</p>
-                        </div>
-                    )}
-
                     {/* Footer Navigation */}
                     <div className="flex gap-4 mt-12 pt-8 border-t border-white/5">
                         <button
@@ -309,18 +182,17 @@ export default function PersonalSkillsPage() {
                             <ArrowLeft className="w-6 h-6 text-gray-400 group-hover:text-white transition-colors" />
                         </button>
                         <button
-                            onClick={handleNext}
-                            disabled={skills.length < 3 || isLoading}
-                            className="flex-1 py-4 rounded-xl bg-gradient-to-r from-[#2B7FFF] via-[#AD46FF] to-[#F6339A] text-white font-bold text-lg hover:shadow-lg hover:shadow-purple-500/20 hover:scale-[1.01] active:scale-[0.99] transition-all disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                            onClick={() => {
+                                if (skills.length >= 3) {
+                                    router.push("/is-istiqameti");
+                                } else {
+                                    alert("Minimum 3 bacarıq seçməlisiniz");
+                                }
+                            }}
+                            disabled={skills.length < 3}
+                            className="flex-1 py-4 rounded-xl bg-gradient-to-r from-[#2B7FFF] via-[#AD46FF] to-[#F6339A] text-white font-bold text-lg hover:shadow-lg hover:shadow-purple-500/20 hover:scale-[1.01] active:scale-[0.99] transition-all disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed"
                         >
-                            {isLoading ? (
-                                <>
-                                    <Loader2 className="w-5 h-5 animate-spin" />
-                                    Saxlanılır...
-                                </>
-                            ) : (
-                                "Növbəti"
-                            )}
+                            Növbəti
                         </button>
                     </div>
                 </div>

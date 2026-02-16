@@ -282,6 +282,24 @@ export default function PersonalInfoPage() {
         };
 
         try {
+            const isLocalhost = typeof window !== 'undefined' && window.location.hostname === 'localhost';
+            
+            if (isLocalhost) {
+                // Mock response for local development
+                await new Promise(resolve => setTimeout(resolve, 500));
+                const mockId = personalInfoId || Math.floor(Math.random() * 10000);
+                
+                setPersonalInfoId(mockId);
+                const savedData = {
+                    id: mockId,
+                    name: requestData.name,
+                    surname: requestData.surname,
+                    birthDate: requestData.birthDate,
+                };
+                localStorage.setItem("personalInfo", JSON.stringify(savedData));
+                return true;
+            }
+            
             let response;
             if (personalInfoId) {
                 // Update existing record
