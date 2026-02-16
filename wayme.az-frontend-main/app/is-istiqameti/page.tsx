@@ -126,7 +126,8 @@ export default function CareerDirectionPage() {
     const handleCategorySelect = (id: string) => {
         setSelectedCategory(id);
         setSelectedSubCategory(null); // Reset sub when category changes
-        setView('subcategories');
+        // Navigate to dynamic route
+        router.push(`/is-istiqameti/${id}`);
     };
 
     const handleSubCategorySelect = (id: string) => {
