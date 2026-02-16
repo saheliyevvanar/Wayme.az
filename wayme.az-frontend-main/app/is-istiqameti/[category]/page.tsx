@@ -97,23 +97,35 @@ export default function SubCategoryPage({ params }: { params: Promise<{ category
             const personalInfoData = localStorage.getItem("personalInfo");
             const personalInfoId = personalInfoData ? JSON.parse(personalInfoData).id : null;
 
+            console.log("handleNext - personalInfoId:", personalInfoId, "categoryId:", categoryId, "selectedSubCategory:", selectedSubCategory);
+
             if (personalInfoId && selectedSubCategory) {
                 // Save career direction to backend
+                const requestBody = {
+                    personalInfoId: personalInfoId,
+                    directionId: categoryId,
+                    subCategoryId: selectedSubCategory
+                };
+                console.log("Sending to backend:", requestBody);
+                
                 const response = await fetch(`${API_BASE_URL}/career-directions/save`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({
-                        personalInfoId: personalInfoId,
-                        directionId: categoryId,
-                        subCategoryId: selectedSubCategory
-                    }),
+                    body: JSON.stringify(requestBody),
                 });
 
+                console.log("Backend response status:", response.status);
                 if (!response.ok) {
-                    console.error("Failed to save career direction");
+                    const errorText = await response.text();
+                    console.error("Failed to save career direction:", errorText);
+                } else {
+                    const data = await response.json();
+                    console.log("Career direction saved:", data);
                 }
+            } else {
+                console.log("Missing data - personalInfoId:", personalInfoId, "selectedSubCategory:", selectedSubCategory);
             }
 
             // Save to localStorage for later use
