@@ -5,6 +5,31 @@ import Footer from "../../../Components/Layout/Footer";
 import { ArrowLeft, Check } from "lucide-react";
 import { professions } from "../professionsData";
 
+// Map icon string names to lucide-react components
+import {
+    Code2,
+    Database,
+    BarChart3,
+    Megaphone,
+    Brush,
+    ShieldCheck,
+    Users,
+    PenLine,
+    Briefcase
+} from "lucide-react";
+
+const iconMap: Record<string, React.ElementType> = {
+    Code2,
+    Database,
+    BarChart3,
+    Megaphone,
+    Brush,
+    ShieldCheck,
+    Users,
+    PenLine,
+    Briefcase
+};
+
 export default function SubCategoryPage({ params }: { params: Promise<{ category: string }> }) {
     const router = useRouter();
 
@@ -120,7 +145,10 @@ export default function SubCategoryPage({ params }: { params: Promise<{ category
                                 >
                                     {/* Icon Box */}
                                     <div className={`p-3 rounded-xl ${categoryData.bg} ${categoryData.border} border shadow-lg shrink-0 flex items-center justify-center transition-transform duration-300 group-hover:scale-110`}>
-                                        <item.icon className={`w-6 h-6 ${categoryData.color}`} />
+                                        {(() => {
+                                            const Icon = iconMap[item.icon];
+                                            return Icon ? <Icon className={`w-6 h-6 ${categoryData.color}`} /> : null;
+                                        })()}
                                     </div>
 
                                     {/* Text Content */}
