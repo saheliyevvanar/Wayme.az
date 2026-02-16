@@ -44,7 +44,7 @@ public class CareerDirectionController {
      * POST /api/career-directions/save
      */
     @PostMapping("/save")
-    public ResponseEntity<UserCareerDirection> saveUserCareerDirection(
+    public ResponseEntity<?> saveUserCareerDirection(
             @RequestBody SaveCareerDirectionRequest request) {
         try {
             UserCareerDirection savedDirection = careerDirectionService.saveUserCareerDirection(
@@ -54,7 +54,15 @@ public class CareerDirectionController {
             );
             return ResponseEntity.ok(savedDirection);
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().build();
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(new java.util.HashMap<String, String>() {{
+                put("error", e.getMessage());
+            }});
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(new java.util.HashMap<String, String>() {{
+                put("error", "Server error: " + e.getMessage());
+            }});
         }
     }
 

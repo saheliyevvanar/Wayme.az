@@ -58,6 +58,8 @@ public class CareerDirectionService {
      * Save user's career direction choice
      */
     public UserCareerDirection saveUserCareerDirection(Long personalInfoId, String directionId, String subCategoryId) {
+        System.out.println("saveUserCareerDirection called with: personalInfoId=" + personalInfoId + ", directionId=" + directionId + ", subCategoryId=" + subCategoryId);
+        
         PersonalInfo personalInfo = personalInfoRepository.findById(personalInfoId)
                 .orElseThrow(() -> new RuntimeException("Personal info not found: " + personalInfoId));
 
@@ -79,7 +81,9 @@ public class CareerDirectionService {
             userCareerDirection.setCareerSubCategory(subCategory);
         }
 
-        return userCareerDirectionRepository.save(userCareerDirection);
+        UserCareerDirection saved = userCareerDirectionRepository.save(userCareerDirection);
+        System.out.println("Career direction saved with ID: " + saved.getId());
+        return saved;
     }
 
     /**
