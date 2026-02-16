@@ -182,9 +182,11 @@ export default function PersonalSkillsPage() {
                             <ArrowLeft className="w-6 h-6 text-gray-400 group-hover:text-white transition-colors" />
                         </button>
                         <button
-                            onClick={() => {
+                            onClick={async () => {
                                 if (skills.length >= 3) {
-                                    router.push("/is-istiqameti");
+                                    // Ensure skills are saved before navigation
+                                    localStorage.setItem("skills", JSON.stringify(skills));
+                                    await router.push("/is-istiqameti");
                                 } else {
                                     alert("Minimum 3 bacarıq seçməlisiniz");
                                 }

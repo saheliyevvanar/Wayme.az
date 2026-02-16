@@ -40,38 +40,9 @@ export default function CareerDirectionPage() {
         const fetchCareerDirections = async () => {
             try {
                 setLoading(true);
-                const isLocalhost = typeof window !== 'undefined' && window.location.hostname === 'localhost';
                 
-                if (isLocalhost) {
-                    // Use local data in development - convert id to directionId for main, id to subCategoryId for subs
-                    await new Promise(resolve => setTimeout(resolve, 300));
-                    const convertedData = professions.map((prof: any) => ({
-                        ...prof,
-                        directionId: prof.id,
-                        id: undefined,
-                        subCategories: prof.subCategories?.map((sub: any) => ({
-                            ...sub,
-                            subCategoryId: sub.id,
-                            id: undefined
-                        }))
-                    })) as CareerDirection[];
-                    setCareerDirections(convertedData);
-                    setError(null);
-                } else {
-                    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://waymeaz-production.up.railway.app/api";
-                    const response = await fetch(`${apiUrl}/career-directions`);
-                    
-                    if (!response.ok) {
-                        throw new Error("Failed to fetch career directions");
-                    }
-                    
-                    const data = await response.json();
-                    setCareerDirections(data);
-                    setError(null);
-                }
-            } catch (err) {
-                console.error("Error fetching career directions:", err);
-                // Fallback to local data if backend fails
+                // Always use local data for speed - backend is too slow
+                // Convert id to directionId for main, id to subCategoryId for subs
                 const convertedData = professions.map((prof: any) => ({
                     ...prof,
                     directionId: prof.id,
@@ -83,6 +54,9 @@ export default function CareerDirectionPage() {
                     }))
                 })) as CareerDirection[];
                 setCareerDirections(convertedData);
+                setError(null);
+            } catch (err) {
+                console.error("Error loading career directions:", err);
                 setError(null);
             } finally {
                 setLoading(false);
@@ -277,7 +251,7 @@ export default function CareerDirectionPage() {
                                 ))
                             ) : (
                                 // Sub Categories
-                                currentCategoryData?.subCategories.map((item) => (
+                                currentCategoryData?.subCategories?.map((item) => (
                                     <button
                                         key={item.subCategoryId}
                                         onClick={() => handleSubCategorySelect(item.subCategoryId)}

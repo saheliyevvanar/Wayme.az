@@ -8,12 +8,16 @@ import { FormProvider } from "./FormContext";
 
 const interVar = Inter({
   subsets: ["latin"],
-  variable: "--font-inter"
+  variable: "--font-inter",
+  display: "swap",
+  preload: true,
 })
 
 const arimoVar = Arimo({
   subsets: ["latin"],
-  variable: "--font-arimo"
+  variable: "--font-arimo",
+  display: "swap",
+  preload: true,
 })
 
 
