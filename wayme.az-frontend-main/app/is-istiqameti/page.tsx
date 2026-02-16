@@ -2,8 +2,10 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Footer from "../../Components/Layout/Footer";
-import { ArrowLeft, Check, Code2, BarChart3, Megaphone, Brush, Briefcase, TrendingUp, ShieldAlert, BookOpen, Database, ShieldCheck, Users, PenLine } from "lucide-react";
+import { ArrowLeft, Check, Code2, BarChart3, Megaphone, Brush, Briefcase, TrendingUp, ShieldAlert, BookOpen, Database, ShieldCheck, Users, PenLine, Loader2 } from "lucide-react";
 import { professions } from "./professionsData";
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://waymeaz-production.up.railway.app/api";
 
 interface CareerDirection {
     id: number;
@@ -122,16 +124,65 @@ export default function CareerDirectionPage() {
         }
     };
 
-    const handleNext = () => {
+    const [isSaving, setIsSaving] = useState(false);
+
+    const saveCareerDirection = async () => {
+        const personalInfoData = localStorage.getItem("personalInfo");
+        const personalInfoId = personalInfoData ? JSON.parse(personalInfoData).id : null;
+
+        if (!personalInfoId) {
+            console.log("No personalInfoId found, skipping save");
+            return;
+        }
+
+        try {
+            const requestBody = {
+                personalInfoId: personalInfoId,
+                directionId: selectedCategory,
+                subCategoryId: selectedSubCategory || null
+            };
+            console.log("Saving career direction:", requestBody);
+
+            const response = await fetch(`${API_BASE_URL}/career-directions/save`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(requestBody),
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error("Failed to save career direction:", errorText);
+            } else {
+                const data = await response.json();
+                console.log("Career direction saved successfully:", data);
+            }
+        } catch (error) {
+            console.error("Error saving career direction:", error);
+        }
+    };
+
+    const handleNext = async () => {
         if (view === 'categories') {
             if (selectedCategory) {
+                // Save to localStorage
+                localStorage.setItem("careerDirection", JSON.stringify({
+                    category: selectedCategory,
+                    subCategory: selectedSubCategory
+                }));
                 setView('subcategories');
             } else {
                 router.push("/test");
             }
         } else {
-            // In subcategories view
-            // Navigate to next step
+            // In subcategories view - save to backend and navigate
+            setIsSaving(true);
+            try {
+                await saveCareerDirection();
+            } finally {
+                setIsSaving(false);
+            }
             router.push("/test");
         }
     };
@@ -300,9 +351,15 @@ export default function CareerDirectionPage() {
 
                             <button
                                 onClick={handleNext}
-                                className="flex-1 h-[60px] rounded-2xl bg-gradient-to-r from-[#2B7FFF] via-[#AD46FF] to-[#F6339A] text-white font-bold text-lg hover:shadow-lg hover:shadow-purple-500/20 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center"
+                                disabled={isSaving}
+                                className="flex-1 h-[60px] rounded-2xl bg-gradient-to-r from-[#2B7FFF] via-[#AD46FF] to-[#F6339A] text-white font-bold text-lg hover:shadow-lg hover:shadow-purple-500/20 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center disabled:opacity-70 disabled:cursor-not-allowed"
                             >
-                                {view === 'categories'
+                                {isSaving ? (
+                                    <>
+                                        <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                                        Saxlanılır...
+                                    </>
+                                ) : view === 'categories'
                                     ? (selectedCategory ? "Davam et" : "Seçmədən testə başla")
                                     : (selectedSubCategory ? "Seçilmiş istiqamətlə testə başla" : "Seçmədən testə başla")
                                 }
