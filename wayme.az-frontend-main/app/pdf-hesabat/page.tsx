@@ -22,7 +22,21 @@ export default function PdfReportPage() {
         setMessage(null)
 
         try {
-            const personalInfoId = localStorage.getItem('personalInfoId')
+            // Try to get personalInfoId from localStorage
+            let personalInfoId = localStorage.getItem('personalInfoId')
+            
+            // If not found, try to get it from personalInfo object
+            if (!personalInfoId) {
+                const personalInfo = localStorage.getItem('personalInfo')
+                if (personalInfo) {
+                    try {
+                        const data = JSON.parse(personalInfo)
+                        personalInfoId = data.id?.toString()
+                    } catch (e) {
+                        console.error('Error parsing personalInfo:', e)
+                    }
+                }
+            }
             
             if (!personalInfoId) {
                 setMessage({ type: 'error', text: 'Şəxsi məlumatlar tapılmadı. Lütfən başdan başlayın.' })
