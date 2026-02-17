@@ -2,15 +2,17 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Footer from "../../Components/Layout/Footer";
-import { ArrowLeft, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Loader2 } from "lucide-react";
 import { questions } from "./questions";
 
 const QUESTIONS_PER_PAGE = 5;
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://waymeaz-production.up.railway.app/api";
 
 export default function TestPage() {
     const router = useRouter();
     const [currentPage, setCurrentPage] = useState(0);
     const [answers, setAnswers] = useState<Record<number, string>>({});
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     // Derived state
     const totalQuestions = questions.length;
@@ -50,12 +52,77 @@ export default function TestPage() {
         }));
     };
 
-    const handleNext = () => {
+    const calculateScore = () => {
+        // Simple scoring: count correct answers
+        let correctCount = 0;
+        
+        // Check answers against questions (assuming first option is correct for demo)
+        // In a real app, you'd have correct answers defined in questions
+        Object.entries(answers).forEach(([questionId, answerId]) => {
+            const question = questions.find(q => q.id === parseInt(questionId));
+            // For demo: if answer matches the first option, it's correct
+            if (question && question.options[0].id === answerId) {
+                correctCount++;
+            }
+        });
+
+        const percentage = (correctCount / totalQuestions) * 100;
+        return { correct: correctCount, percentage: Math.round(percentage * 100) / 100 };
+    };
+
+    const handleNext = async () => {
         if (isLastPage) {
-            // Submit test / Go to results
-            // In a real app, we would send 'answers' to an API here.
-            // For now, we simulate success and go to the results page.
-            router.push("/netice");
+            // Submit test to backend
+            setIsSubmitting(true);
+            try {
+                const personalInfoData = localStorage.getItem("personalInfo");
+                const personalInfoId = personalInfoData ? JSON.parse(personalInfoData).id : null;
+
+                if (!personalInfoId) {
+                    console.error("No personal info ID found");
+                    return;
+                }
+
+                const { correct, percentage } = calculateScore();
+
+                const requestBody = {
+                    personalInfoId: personalInfoId,
+                    answers: answers,
+                    totalQuestions: totalQuestions,
+                    correctAnswers: correct,
+                    scorePercentage: percentage
+                };
+
+                console.log("Submitting test:", requestBody);
+
+                const response = await fetch(`${API_BASE_URL}/test-results/submit`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(requestBody),
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error("Failed to submit test:", errorText);
+                } else {
+                    const data = await response.json();
+                    console.log("Test submitted successfully:", data);
+                }
+
+                // Clear test answers from localStorage
+                localStorage.removeItem("testAnswers");
+                
+                // Navigate to results page
+                router.push("/netice");
+            } catch (error) {
+                console.error("Error submitting test:", error);
+                // Still navigate even if submission fails
+                router.push("/netice");
+            } finally {
+                setIsSubmitting(false);
+            }
         } else {
             setCurrentPage(prev => prev + 1);
             window.scrollTo(0, 0);
@@ -162,10 +229,17 @@ export default function TestPage() {
 
                         <button
                             onClick={handleNext}
-                            disabled={!isCurrentPageComplete}
+                            disabled={!isCurrentPageComplete || isSubmitting}
                             className="flex-1 h-[56px] rounded-xl bg-gradient-to-r from-[#2B7FFF] via-[#AD46FF] to-[#F6339A] text-white font-bold text-lg hover:shadow-lg hover:shadow-purple-500/20 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed"
                         >
-                            {nextButtonText}
+                            {isSubmitting ? (
+                                <>
+                                    <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                                    Göndərilir...
+                                </>
+                            ) : (
+                                nextButtonText
+                            )}
                         </button>
                     </div>
 
