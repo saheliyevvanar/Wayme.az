@@ -135,15 +135,22 @@ export default function CareerDirectionPage() {
             return;
         }
 
+        // Find category and subcategory data from professions
+        const categoryData = professions.find(p => p.id === selectedCategory);
+        const subCategoryData = categoryData?.subCategories?.find(s => s.id === selectedSubCategory);
+
         try {
             const requestBody = {
                 personalInfoId: personalInfoId,
-                directionId: selectedCategory,
-                subCategoryId: selectedSubCategory || null
+                categoryId: selectedCategory,
+                categoryTitle: categoryData?.title || selectedCategory,
+                subCategoryId: selectedSubCategory || null,
+                subCategoryTitle: subCategoryData?.title || null
             };
-            console.log("Saving career direction:", requestBody);
+            console.log("Saving career choice:", requestBody);
 
-            const response = await fetch(`${API_BASE_URL}/career-directions/save`, {
+            // Use the new save-choice endpoint
+            const response = await fetch(`${API_BASE_URL}/career-directions/save-choice`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -153,13 +160,13 @@ export default function CareerDirectionPage() {
 
             if (!response.ok) {
                 const errorText = await response.text();
-                console.error("Failed to save career direction:", errorText);
+                console.error("Failed to save career choice:", errorText);
             } else {
                 const data = await response.json();
-                console.log("Career direction saved successfully:", data);
+                console.log("Career choice saved successfully:", data);
             }
         } catch (error) {
-            console.error("Error saving career direction:", error);
+            console.error("Error saving career choice:", error);
         }
     };
 

@@ -2,13 +2,18 @@ package com.example.wayme_backend.controller;
 
 import com.example.wayme_backend.dto.CareerDirectionDTO;
 import com.example.wayme_backend.dto.SaveCareerDirectionRequest;
+import com.example.wayme_backend.dto.SaveUserCareerChoiceRequest;
+import com.example.wayme_backend.entity.UserCareerChoice;
 import com.example.wayme_backend.entity.UserCareerDirection;
+import com.example.wayme_backend.repository.UserCareerChoiceRepository;
 import com.example.wayme_backend.service.CareerDirectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/career-directions")
@@ -17,6 +22,9 @@ public class CareerDirectionController {
 
     @Autowired
     private CareerDirectionService careerDirectionService;
+
+    @Autowired
+    private UserCareerChoiceRepository userCareerChoiceRepository;
 
     /**
      * Get all career directions (main categories)
@@ -78,5 +86,57 @@ public class CareerDirectionController {
             return ResponseEntity.ok(userDirection);
         }
         return ResponseEntity.notFound().build();
+    }
+
+    /**
+     * Save user's career choice (simple - no foreign key dependency)
+     * POST /api/career-directions/save-choice
+     */
+    @PostMapping("/save-choice")
+    public ResponseEntity<?> saveUserCareerChoice(@RequestBody SaveUserCareerChoiceRequest request) {
+        try {
+            System.out.println("Saving career choice: " + request);
+
+            // Find existing or create new
+            UserCareerChoice choice = userCareerChoiceRepository
+                    .findByPersonalInfoId(request.getPersonalInfoId())
+                    .orElse(new UserCareerChoice());
+
+            choice.setPersonalInfoId(request.getPersonalInfoId());
+            choice.setCategoryId(request.getCategoryId());
+            choice.setCategoryTitle(request.getCategoryTitle());
+            choice.setSubCategoryId(request.getSubCategoryId());
+            choice.setSubCategoryTitle(request.getSubCategoryTitle());
+
+            UserCareerChoice saved = userCareerChoiceRepository.save(choice);
+            System.out.println("Career choice saved with ID: " + saved.getId());
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("id", saved.getId());
+            response.put("personalInfoId", saved.getPersonalInfoId());
+            response.put("categoryId", saved.getCategoryId());
+            response.put("categoryTitle", saved.getCategoryTitle());
+            response.put("subCategoryId", saved.getSubCategoryId());
+            response.put("subCategoryTitle", saved.getSubCategoryTitle());
+            response.put("message", "İş istiqaməti uğurla saxlanıldı");
+
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Map<String, String> error = new HashMap<>();
+            error.put("error", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
+        }
+    }
+
+    /**
+     * Get user's career choice
+     * GET /api/career-directions/choice/{personalInfoId}
+     */
+    @GetMapping("/choice/{personalInfoId}")
+    public ResponseEntity<?> getUserCareerChoice(@PathVariable Long personalInfoId) {
+        return userCareerChoiceRepository.findByPersonalInfoId(personalInfoId)
+                .map(choice -> ResponseEntity.ok((Object) choice))
+                .orElse(ResponseEntity.notFound().build());
     }
 }

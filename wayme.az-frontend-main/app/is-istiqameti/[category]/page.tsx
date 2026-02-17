@@ -99,17 +99,21 @@ export default function SubCategoryPage({ params }: { params: Promise<{ category
 
             console.log("handleNext - personalInfoId:", personalInfoId, "categoryId:", categoryId, "selectedSubCategory:", selectedSubCategory);
 
-            // If we have personalInfoId AND a sub-category selection
-            if (personalInfoId && selectedSubCategory) {
-                // Save career direction to backend
+            // Find sub-category data
+            const subCategoryData = categoryData?.subCategories?.find(s => s.id === selectedSubCategory);
+
+            if (personalInfoId) {
+                // Save career choice to backend using new endpoint
                 const requestBody = {
                     personalInfoId: personalInfoId,
-                    directionId: categoryId,
-                    subCategoryId: selectedSubCategory
+                    categoryId: categoryId,
+                    categoryTitle: categoryData?.title || categoryId,
+                    subCategoryId: selectedSubCategory || null,
+                    subCategoryTitle: subCategoryData?.title || null
                 };
                 console.log("Sending to backend:", requestBody);
                 
-                const response = await fetch(`${API_BASE_URL}/career-directions/save`, {
+                const response = await fetch(`${API_BASE_URL}/career-directions/save-choice`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -120,35 +124,13 @@ export default function SubCategoryPage({ params }: { params: Promise<{ category
                 console.log("Backend response status:", response.status);
                 if (!response.ok) {
                     const errorText = await response.text();
-                    console.error("Failed to save career direction:", errorText);
+                    console.error("Failed to save career choice:", errorText);
                 } else {
                     const data = await response.json();
-                    console.log("Career direction saved:", data);
-                }
-            } else if (personalInfoId && !selectedSubCategory) {
-                // If no sub-category selected but personalInfoId exists, still save main category
-                const requestBody = {
-                    personalInfoId: personalInfoId,
-                    directionId: categoryId,
-                    subCategoryId: null
-                };
-                console.log("Sending category only to backend:", requestBody);
-                
-                const response = await fetch(`${API_BASE_URL}/career-directions/save`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(requestBody),
-                });
-
-                console.log("Backend response status:", response.status);
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    console.error("Failed to save career direction:", errorText);
+                    console.log("Career choice saved:", data);
                 }
             } else {
-                console.log("Missing personalInfoId - skipping backend save");
+                console.log("No personalInfoId found, skipping backend save");
             }
 
             // Save to localStorage for later use
