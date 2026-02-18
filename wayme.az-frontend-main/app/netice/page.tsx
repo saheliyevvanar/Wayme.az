@@ -9,20 +9,84 @@ import {
     Palette,
     ArrowLeft,
     Share2,
-    Download
+    Download,
+    FileDown
 } from 'lucide-react'
+
+interface CareerAnalysis {
+    primaryCareerField: {
+        name: string
+        matchPercentage: number
+        description: string
+    }
+    topCareerFields: Array<{
+        rank: number
+        name: string
+        matchPercentage: number
+        reason: string
+    }>
+    strengths: string[]
+    areasToImprove: string[]
+    recommendedSkills: Array<{
+        skill: string
+        importance: string
+        description: string
+    }>
+    suggestedJobRoles: Array<{
+        title: string
+        description: string
+        salaryRange: string
+        demandLevel: string
+    }>
+}
 
 export default function ResultPage() {
     const router = useRouter()
     const [isLoading, setIsLoading] = useState(true)
+    const [analysis, setAnalysis] = useState<CareerAnalysis | null>(null)
+    const [pdfUrl, setPdfUrl] = useState<string | null>(null)
+    const [isDownloading, setIsDownloading] = useState(false)
 
     useEffect(() => {
+        // Load analysis from localStorage
+        const savedAnalysis = localStorage.getItem("careerAnalysis")
+        const savedPdfUrl = localStorage.getItem("pdfUrl")
+        
+        if (savedAnalysis) {
+            try {
+                const analysisData = JSON.parse(savedAnalysis)
+                setAnalysis(analysisData.data?.analysis || analysisData)
+                setPdfUrl(savedPdfUrl || analysisData.data?.pdfUrl)
+            } catch (e) {
+                console.error("Error parsing analysis", e)
+            }
+        }
+        
         // Simulate analyzing process
         const timer = setTimeout(() => {
             setIsLoading(false)
         }, 2000)
         return () => clearTimeout(timer)
     }, [])
+
+    const handleDownloadPdf = async () => {
+        if (!pdfUrl) return
+        
+        setIsDownloading(true)
+        try {
+            const link = document.createElement('a')
+            link.href = pdfUrl
+            link.download = 'career-report.pdf'
+            document.body.appendChild(link)
+            link.click()
+            document.body.removeChild(link)
+        } catch (error) {
+            console.error("Error downloading PDF:", error)
+            alert("PDF yüklənərkən xəta baş verdi")
+        } finally {
+            setIsDownloading(false)
+        }
+    }
 
     if (isLoading) {
         return (
@@ -63,117 +127,90 @@ export default function ResultPage() {
                             <div className="flex items-center gap-3 mb-2">
                                 <Award className="text-yellow-400 w-8 h-8" />
                                 <h1 className="text-2xl md:text-3xl font-bold text-white">
-                                    Nəticələriniz
+                                    {analysis?.primaryCareerField?.name || 'Nəticələriniz'}
                                 </h1>
                             </div>
                             <p className="text-gray-400 text-base md:text-lg">
-                                Sizin üçün ən uyğun karyera istiqamətləri
+                                {analysis?.primaryCareerField?.description || 'Sizin üçün ən uyğun karyera istiqamətləri'}
                             </p>
                         </div>
 
-                        {/* Results List */}
+                        {/* Match Percentage */}
+                        {analysis?.primaryCareerField && (
+                            <div className="bg-gradient-to-r from-purple-600/20 to-pink-600/20 rounded-2xl p-6 border border-purple-500/30 mb-6">
+                                <div className="text-center">
+                                    <p className="text-gray-300 text-sm mb-2">Uyğunluq Faizi</p>
+                                    <h2 className="text-5xl font-bold text-white mb-2">
+                                        {analysis.primaryCareerField.matchPercentage}%
+                                    </h2>
+                                    <p className="text-gray-400">Sizin profiliniz bu sahə üçün çox uyğundur</p>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Top Career Fields */}
                         <div className="bg-[#152e52]/50 rounded-2xl p-6 border border-white/5 mb-6">
-                            <h2 className="text-xl font-bold text-white mb-4">Testin nəticəsi</h2>
+                            <h2 className="text-xl font-bold text-white mb-4">Top Karyera Sahələri</h2>
                             <div className="space-y-4">
-                                {/* Result 1 */}
-                                <div className="bg-[#0B1D36] p-4 rounded-xl flex items-center justify-between group hover:border-white/10 border border-transparent transition-all">
-                                    <div className="flex items-center gap-4">
-                                        <div className="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center text-yellow-500 font-bold shrink-0">
-                                            1
-                                        </div>
-                                        <div className="flex items-center gap-3">
-                                            <div className="p-2 rounded-lg bg-purple-500/20 text-purple-400">
-                                                <Palette size={20} />
+                                {analysis?.topCareerFields?.map((field, idx) => (
+                                    <div key={idx} className="bg-[#0B1D36] p-4 rounded-xl flex items-center justify-between group hover:border-white/10 border border-transparent transition-all">
+                                        <div className="flex items-center gap-4 flex-1">
+                                            <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-bold shrink-0 ${
+                                                idx === 0 ? 'bg-yellow-500/20 text-yellow-400' :
+                                                idx === 1 ? 'bg-gray-400/20 text-gray-400' :
+                                                'bg-orange-600/20 text-orange-600'
+                                            }`}>
+                                                {idx + 1}
                                             </div>
-                                            <span className="font-bold text-lg">UX/UI Dizayn</span>
-                                        </div>
-                                    </div>
-                                    <span className="text-2xl font-bold text-white">60%</span>
-                                </div>
-
-                                {/* Result 2 */}
-                                <div className="bg-[#0B1D36] p-4 rounded-xl flex items-center justify-between group hover:border-white/10 border border-transparent transition-all">
-                                    <div className="flex items-center gap-4">
-                                        <div className="w-10 h-10 rounded-full bg-gray-400/20 flex items-center justify-center text-gray-400 font-bold shrink-0">
-                                            2
-                                        </div>
-                                        <div className="flex items-center gap-3">
-                                            <div className="p-2 rounded-lg bg-blue-500/20 text-blue-400">
-                                                <Code2 size={20} />
+                                            <div className="flex-1">
+                                                <span className="font-bold text-lg text-white block">{field.name}</span>
+                                                <p className="text-sm text-gray-400">{field.reason}</p>
                                             </div>
-                                            <span className="font-bold text-lg">Frontend Developer</span>
                                         </div>
+                                        <span className="text-2xl font-bold text-white ml-4">{field.matchPercentage}%</span>
                                     </div>
-                                    <span className="text-2xl font-bold text-white">40%</span>
-                                </div>
-
-                                {/* Result 3 */}
-                                <div className="bg-[#0B1D36] p-4 rounded-xl flex items-center justify-between group hover:border-white/10 border border-transparent transition-all">
-                                    <div className="flex items-center gap-4">
-                                        <div className="w-10 h-10 rounded-full bg-orange-600/20 flex items-center justify-center text-orange-600 font-bold shrink-0">
-                                            3
-                                        </div>
-                                        <div className="flex items-center gap-3">
-                                            <div className="p-2 rounded-lg bg-cyan-500/20 text-cyan-400">
-                                                <Database size={20} />
-                                            </div>
-                                            <span className="font-bold text-lg">Backend Developer</span>
-                                        </div>
-                                    </div>
-                                    <span className="text-2xl font-bold text-white">20%</span>
-                                </div>
+                                )) || (
+                                    <p className="text-gray-400">Nəticələr yüklənir...</p>
+                                )}
                             </div>
                         </div>
 
-                        {/* Skill Compatibility */}
-                        <div className="bg-[#152e52]/50 rounded-2xl p-6 border border-white/5 mb-6">
-                            <div className="flex justify-between items-center mb-2">
-                                <h3 className="font-bold text-white text-lg">UX/UI üçün bacarıq uyğunluğu</h3>
-                                <span className="text-white font-bold">40%</span>
-                            </div>
-                            <div className="w-full bg-[#0B1D36] rounded-full h-2.5 mb-6 overflow-hidden">
-                                <div className="h-full bg-white rounded-full w-[40%]" />
-                            </div>
-
-                            <div className="bg-[#0B1D36] p-4 rounded-xl">
-                                <h4 className="font-bold text-white mb-3">Çatışmayan bacarıqlar</h4>
-                                <div className="flex flex-wrap gap-2">
-                                    {["Wireframing", "UX prinsipləri", "Kreativlik"].map((skill, i) => (
-                                        <span key={i} className="px-3 py-1.5 rounded-lg bg-[#152e52] text-gray-300 text-sm font-medium border border-white/5">
-                                            {skill}
-                                        </span>
+                        {/* Strengths */}
+                        {analysis?.strengths && (
+                            <div className="bg-[#152e52]/50 rounded-2xl p-6 border border-white/5 mb-6">
+                                <h3 className="font-bold text-white text-lg mb-4">Sizin Güçlü Tərəfləriniz</h3>
+                                <div className="space-y-2">
+                                    {analysis.strengths.map((strength, idx) => (
+                                        <div key={idx} className="bg-[#0B1D36] p-3 rounded-lg text-gray-300 text-sm">
+                                            ✓ {strength}
+                                        </div>
                                     ))}
                                 </div>
                             </div>
-                        </div>
+                        )}
 
-                        {/* Resources */}
-                        <div className="bg-[#152e52]/50 rounded-2xl p-6 border border-white/5 mb-8">
-                            <h2 className="text-xl font-bold text-white mb-4">Tövsiyyə olunan resurslar</h2>
-                            <div className="space-y-3">
-                                <div className="bg-[#0B1D36] p-4 rounded-xl">
-                                    <h3 className="font-bold text-white mb-2">Online kurslar</h3>
-                                    <ul className="text-sm text-gray-400 space-y-1 ml-4 list-disc">
-                                        <li>Kurs adı - <a href="#" className="text-blue-400 hover:underline">Link</a></li>
-                                        <li>Kurs adı - <a href="#" className="text-blue-400 hover:underline">Link</a></li>
-                                    </ul>
-                                </div>
-                                <div className="bg-[#0B1D36] p-4 rounded-xl">
-                                    <h3 className="font-bold text-white mb-2">Youtube kanalları</h3>
-                                    <ul className="text-sm text-gray-400 space-y-1 ml-4 list-disc">
-                                        <li>Kanal adı - <a href="#" className="text-blue-400 hover:underline">Link</a></li>
-                                        <li>Kanal adı - <a href="#" className="text-blue-400 hover:underline">Link</a></li>
-                                    </ul>
-                                </div>
-                                <div className="bg-[#0B1D36] p-4 rounded-xl">
-                                    <h3 className="font-bold text-white mb-2">Kitab tövsiyyələri</h3>
-                                    <ul className="text-sm text-gray-400 space-y-1 ml-4 list-disc">
-                                        <li>Kitab adı - <a href="#" className="text-blue-400 hover:underline">Link</a></li>
-                                        <li>Kitab adı - <a href="#" className="text-blue-400 hover:underline">Link</a></li>
-                                    </ul>
+                        {/* Recommended Skills */}
+                        {analysis?.recommendedSkills && (
+                            <div className="bg-[#152e52]/50 rounded-2xl p-6 border border-white/5 mb-6">
+                                <h3 className="font-bold text-white text-lg mb-4">İnkişaf Etdirəcəyiniz Bacarıqlar</h3>
+                                <div className="space-y-3">
+                                    {analysis.recommendedSkills.slice(0, 4).map((skill, idx) => (
+                                        <div key={idx} className="bg-[#0B1D36] p-3 rounded-lg">
+                                            <div className="flex items-center justify-between mb-1">
+                                                <span className="font-semibold text-white text-sm">{skill.skill}</span>
+                                                <span className={`text-xs px-2 py-1 rounded-full ${
+                                                    skill.importance === 'Yüksək' ? 'bg-red-500/20 text-red-400' :
+                                                    'bg-yellow-500/20 text-yellow-400'
+                                                }`}>
+                                                    {skill.importance}
+                                                </span>
+                                            </div>
+                                            <p className="text-xs text-gray-400">{skill.description}</p>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
-                        </div>
+                        )}
 
                         {/* Footer Buttons */}
                         <div className="flex gap-4">
@@ -183,11 +220,24 @@ export default function ResultPage() {
                             >
                                 <ArrowLeft className="w-6 h-6" />
                             </button>
+                            
+                            {pdfUrl && (
+                                <button
+                                    onClick={handleDownloadPdf}
+                                    disabled={isDownloading}
+                                    className="flex-1 h-[56px] rounded-xl bg-green-600 hover:bg-green-700 text-white font-bold text-lg hover:shadow-lg hover:shadow-green-500/20 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    <FileDown className="w-5 h-5 mr-2" />
+                                    {isDownloading ? 'Yüklənir...' : 'PDF Yüklə'}
+                                </button>
+                            )}
+                            
                             <button
                                 onClick={() => router.push('/pdf-hesabat')}
                                 className="flex-1 h-[56px] rounded-xl bg-gradient-to-r from-[#2B7FFF] via-[#AD46FF] to-[#F6339A] text-white font-bold text-lg hover:shadow-lg hover:shadow-purple-500/20 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center"
                             >
-                                PDF hesabat almaq
+                                <Award className="w-5 h-5 mr-2" />
+                                Tam Hesabat
                             </button>
                         </div>
 

@@ -72,30 +72,42 @@ export default function TestPage() {
 
     const handleNext = async () => {
         if (isLastPage) {
-            // Submit test to backend
+            // Submit test to AI backend for analysis
             setIsSubmitting(true);
             try {
                 const personalInfoData = localStorage.getItem("personalInfo");
-                const personalInfoId = personalInfoData ? JSON.parse(personalInfoData).id : null;
+                const personalInfo = personalInfoData ? JSON.parse(personalInfoData) : {};
 
-                if (!personalInfoId) {
-                    console.error("No personal info ID found");
-                    return;
-                }
-
-                const { correct, percentage } = calculateScore();
+                // Format answers for AI analysis
+                const formattedAnswers = Object.entries(answers).map(([questionId, optionId]) => {
+                    const question = questions.find(q => q.id === parseInt(questionId));
+                    if (!question) return null;
+                    
+                    const option = question.options.find(o => o.id === optionId);
+                    return {
+                        questionId: parseInt(questionId),
+                        question: question.question,
+                        answer: option?.text || optionId,
+                        value: optionId
+                    };
+                }).filter(Boolean);
 
                 const requestBody = {
-                    personalInfoId: personalInfoId,
-                    answers: answers,
-                    totalQuestions: totalQuestions,
-                    correctAnswers: correct,
-                    scorePercentage: percentage
+                    userInfo: {
+                        name: personalInfo.name || "İstifadəçi",
+                        age: personalInfo.age || null,
+                        education: personalInfo.education || null,
+                        currentField: personalInfo.currentField || null
+                    },
+                    answers: formattedAnswers,
+                    selectedCareerField: null
                 };
 
-                console.log("Submitting test:", requestBody);
+                console.log("Sending to AI backend:", requestBody);
 
-                const response = await fetch(`${API_BASE_URL}/test-results/submit`, {
+                // Send to AI backend (localhost:3002 for development, or production URL)
+                const aiApiUrl = process.env.NEXT_PUBLIC_AI_API_URL || "http://localhost:3002";
+                const response = await fetch(`${aiApiUrl}/api/analyze`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -105,21 +117,30 @@ export default function TestPage() {
 
                 if (!response.ok) {
                     const errorText = await response.text();
-                    console.error("Failed to submit test:", errorText);
-                } else {
-                    const data = await response.json();
-                    console.log("Test submitted successfully:", data);
+                    console.error("Failed to analyze test:", errorText);
+                    alert("AI analiz edilərkən xəta baş verdi. Lütfən yenidən cəhd edin.");
+                    return;
+                }
+
+                const analysisData = await response.json();
+                console.log("AI Analysis completed:", analysisData);
+
+                // Save analysis results to localStorage
+                localStorage.setItem("careerAnalysis", JSON.stringify(analysisData));
+                
+                // Save PDF URL for download
+                if (analysisData.data?.pdfUrl) {
+                    localStorage.setItem("pdfUrl", analysisData.data.pdfUrl);
                 }
 
                 // Clear test answers from localStorage
                 localStorage.removeItem("testAnswers");
                 
-                // Navigate to results page
+                // Navigate to results page where PDF will be shown
                 router.push("/netice");
             } catch (error) {
                 console.error("Error submitting test:", error);
-                // Still navigate even if submission fails
-                router.push("/netice");
+                alert("Xəta: " + (error instanceof Error ? error.message : "Bilinməyən xəta"));
             } finally {
                 setIsSubmitting(false);
             }
