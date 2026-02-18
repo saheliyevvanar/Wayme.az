@@ -105,8 +105,8 @@ export default function TestPage() {
 
                 console.log("Sending to AI backend:", requestBody);
 
-                // Send to AI backend (localhost:3002 for development, or production URL)
-                const aiApiUrl = process.env.NEXT_PUBLIC_AI_API_URL || "http://localhost:3002";
+                // Send to AI backend (Railway production URL)
+                const aiApiUrl = process.env.NEXT_PUBLIC_AI_API_URL || "https://proud-upliftment-production.up.railway.app";
                 const response = await fetch(`${aiApiUrl}/api/analyze`, {
                     method: "POST",
                     headers: {
