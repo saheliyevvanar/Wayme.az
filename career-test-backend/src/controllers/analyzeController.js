@@ -1,4 +1,4 @@
-const geminiService = require('../services/geminiService');
+const groqService = require('../services/groqService');
 const pdfService = require('../services/pdfService');
 const questions = require('../data/questions');
 
@@ -28,8 +28,8 @@ const analyzeTest = async (req, res, next) => {
     console.log(`📊 Total answers: ${answers.length}`);
     console.log(`🎯 Selected career field: ${selectedCareerField || 'None'}`);
 
-    // Step 1: Send answers to Gemini for analysis
-    const analysisResult = await geminiService.analyzeCareerTest(
+    // Step 1: Send answers to Groq for analysis
+    const analysisResult = await groqService.analyzeCareerTest(
       answers,
       userInfo,
       selectedCareerField
