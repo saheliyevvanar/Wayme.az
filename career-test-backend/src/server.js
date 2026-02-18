@@ -15,11 +15,13 @@ if (!fs.existsSync(pdfStoragePath)) {
 
 // Middleware
 app.use(cors({
-  origin: config.cors.frontendUrl,
-  methods: ['GET', 'POST'],
+  origin: '*', // Allow all origins for development
+  methods: ['GET', 'POST', 'OPTIONS'],
   credentials: true,
+  allowedHeaders: ['Content-Type']
 }));
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 // Serve static PDF files
 app.use('/pdfs', express.static(pdfStoragePath));
