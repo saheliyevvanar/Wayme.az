@@ -38,7 +38,7 @@ const analyzeTest = async (req, res, next) => {
     console.log('✅ AI Analysis complete');
 
     // Step 2: Generate PDF report
-    const pdfResult = await pdfService.generatePdfReport(analysisResult.data, userInfo);
+    const pdfResult = await pdfService.generatePdfReport(analysisResult.data, userInfo, req);
 
     console.log(`📄 PDF generated: ${pdfResult.filename}`);
 

@@ -8,7 +8,7 @@ const pdfTemplate = require('../templates/pdfTemplate');
 /**
  * Generate PDF report from analysis results
  */
-const generatePdfReport = async (analysisResult, userInfo) => {
+const generatePdfReport = async (analysisResult, userInfo, req = null) => {
   let browser = null;
   
   try {
@@ -59,10 +59,18 @@ const generatePdfReport = async (analysisResult, userInfo) => {
 
     console.log(`✅ PDF saved: ${filepath}`);
 
+    // Build PDF URL dynamically from request or use config
+    let pdfBaseUrl = config.pdf.baseUrl;
+    if (req && req.get('host')) {
+      const protocol = req.protocol || 'https';
+      const host = req.get('host');
+      pdfBaseUrl = `${protocol}://${host}/pdfs`;
+    }
+
     return {
       filename,
       filepath,
-      url: `${config.pdf.baseUrl}/${filename}`,
+      url: `${pdfBaseUrl}/${filename}`,
     };
 
   } catch (error) {
