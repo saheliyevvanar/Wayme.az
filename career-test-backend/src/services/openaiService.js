@@ -143,7 +143,7 @@ const analyzeCareerTest = async (answers, userInfo, selectedCareerField) => {
     const prompt = buildAnalysisPrompt(answers, userInfo, selectedCareerField);
 
     const completion = await openai.chat.completions.create({
-      model: 'gpt-4-turbo-preview',
+      model: 'gpt-3.5-turbo',
       messages: [
         {
           role: 'system',
@@ -155,12 +155,24 @@ const analyzeCareerTest = async (answers, userInfo, selectedCareerField) => {
         },
       ],
       temperature: 0.7,
-      max_tokens: 4000,
-      response_format: { type: 'json_object' },
+      max_tokens: 2000,
     });
 
     const responseText = completion.choices[0].message.content;
-    const analysisResult = JSON.parse(responseText);
+    
+    // Try to parse JSON - handle cases where AI adds extra text
+    let analysisResult;
+    try {
+      analysisResult = JSON.parse(responseText);
+    } catch (e) {
+      // Try to extract JSON from response if it contains extra text
+      const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        analysisResult = JSON.parse(jsonMatch[0]);
+      } else {
+        throw new Error('Could not parse AI response as JSON');
+      }
+    }
 
     return {
       ...analysisResult,
