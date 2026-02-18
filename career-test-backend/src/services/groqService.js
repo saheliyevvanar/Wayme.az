@@ -1,9 +1,18 @@
 const Groq = require('groq-sdk');
 const config = require('../config');
 
-const groq = new Groq({
-  apiKey: config.groq.apiKey,
-});
+let groq = null;
+
+const getGroqClient = () => {
+  if (!groq) {
+    const apiKey = config.groq.apiKey;
+    if (!apiKey) {
+      throw new Error('GROQ_API_KEY environment variable is not set');
+    }
+    groq = new Groq({ apiKey });
+  }
+  return groq;
+};
 
 /**
  * Build the AI prompt for career analysis
@@ -101,7 +110,7 @@ const analyzeCareerTest = async (answers, userInfo, selectedCareerField) => {
 
     const prompt = buildAnalysisPrompt(answers, userInfo, selectedCareerField);
 
-    const message = await groq.chat.completions.create({
+    const message = await getGroqClient().chat.completions.create({
       messages: [
         {
           role: "user",
