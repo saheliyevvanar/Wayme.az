@@ -15,13 +15,17 @@ if (!fs.existsSync(pdfStoragePath)) {
 
 // Middleware
 app.use(cors({
-  origin: '*', // Allow all origins for development
-  methods: ['GET', 'POST', 'OPTIONS'],
-  credentials: true,
-  allowedHeaders: ['Content-Type']
+  origin: '*',
+  methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'DELETE'],
+  credentials: false,
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  optionsSuccessStatus: 200
 }));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
+
+// Handle OPTIONS requests explicitly
+app.options('*', cors());
 
 // Serve static PDF files
 app.use('/pdfs', express.static(pdfStoragePath));
