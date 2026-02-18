@@ -140,9 +140,58 @@ const analyzeCareerTest = async (answers, userInfo, selectedCareerField) => {
       }
     }
 
+    // Ensure all required fields exist with defaults
+    const safeAnalysis = {
+      primaryCareerField: analysisData.primaryCareerField || {
+        name: "Karyera Sahəsi",
+        description: "Sizin üçün uyğun karyera sahəsi",
+        matchPercentage: 85
+      },
+      topCareerFields: Array.isArray(analysisData.topCareerFields) ? analysisData.topCareerFields : [
+        { rank: 1, name: "Karyera Sahəsi 1", matchPercentage: 85, reason: "Sizin bacarıqlarınıza uyğundur" },
+        { rank: 2, name: "Karyera Sahəsi 2", matchPercentage: 75, reason: "İkinci seçim" },
+        { rank: 3, name: "Karyera Sahəsi 3", matchPercentage: 65, reason: "Üçüncü seçim" }
+      ],
+      strengths: Array.isArray(analysisData.strengths) ? analysisData.strengths : ["Analitik düşüncə", "Yaradıcılıq", "Ünsiyyət"],
+      areasToImprove: Array.isArray(analysisData.areasToImprove) ? analysisData.areasToImprove : ["Təcrübə qazanmaq", "Bacarıqları inkişaf etdirmək"],
+      recommendedSkills: Array.isArray(analysisData.recommendedSkills) ? analysisData.recommendedSkills : [
+        { skill: "Texniki bacarıqlar", importance: "Yüksək", description: "Bu sahədə inkişaf vacibdir" }
+      ],
+      suggestedJobRoles: Array.isArray(analysisData.suggestedJobRoles) ? analysisData.suggestedJobRoles : 
+        (Array.isArray(analysisData.jobRoles) ? analysisData.jobRoles.map(job => ({
+          title: typeof job === 'string' ? job : job.title || 'Vəzifə',
+          description: typeof job === 'string' ? 'Bu vəzifə sizə uyğundur' : job.description || 'Bu vəzifə sizə uyğundur',
+          salaryRange: job.salaryRange || '1000-3000 AZN',
+          demandLevel: job.demandLevel || 'High'
+        })) : [
+          { title: "Mütəxəssis", description: "Bu vəzifə sizə uyğundur", salaryRange: "1500-3000 AZN", demandLevel: "High" }
+        ]),
+      sixMonthRoadmap: analysisData.sixMonthRoadmap && typeof analysisData.sixMonthRoadmap === 'object' ? 
+        (typeof analysisData.sixMonthRoadmap === 'string' ? {
+          month1: { title: "1-ci Ay", tasks: [analysisData.sixMonthRoadmap] }
+        } : Object.keys(analysisData.sixMonthRoadmap).reduce((acc, key, index) => {
+          const value = analysisData.sixMonthRoadmap[key];
+          if (typeof value === 'object' && value.title && value.tasks) {
+            acc[key] = value;
+          } else {
+            acc[`month${index + 1}`] = {
+              title: `${index + 1}-ci Ay`,
+              tasks: Array.isArray(value) ? value : [String(value)]
+            };
+          }
+          return acc;
+        }, {})) : {
+          month1: { title: "1-ci Ay: Araşdırma", tasks: ["Sahəni araşdırın", "Resursları tapın"] },
+          month2: { title: "2-ci Ay: Öyrənmə", tasks: ["Kurslar keçin", "Praktika edin"] },
+          month3: { title: "3-cü Ay: Tətbiq", tasks: ["Layihələr yaradın", "Portfolio qurun"] }
+        },
+      motivationalMessage: analysisData.motivationalMessage || "Hər böyük səyahət bir addımla başlayır. Siz bu yolda uğur qazanacaqsınız!",
+      selectedFieldComparison: analysisData.selectedFieldComparison || null
+    };
+
     return {
       success: true,
-      data: analysisData
+      data: safeAnalysis
     };
 
   } catch (error) {

@@ -4,17 +4,26 @@
  */
 
 const generateHtml = (analysis, userInfo) => {
+  // Safe destructuring with defaults
   const {
-    primaryCareerField,
-    topCareerFields,
-    strengths,
-    areasToImprove,
-    recommendedSkills,
-    suggestedJobRoles,
-    sixMonthRoadmap,
-    motivationalMessage,
-    selectedFieldComparison,
-  } = analysis;
+    primaryCareerField = { name: "Karyera Sahəsi", description: "Analiz edilir", matchPercentage: 0 },
+    topCareerFields = [],
+    strengths = [],
+    areasToImprove = [],
+    recommendedSkills = [],
+    suggestedJobRoles = [],
+    sixMonthRoadmap = {},
+    motivationalMessage = "Hər böyük səyahət bir addımla başlayır!",
+    selectedFieldComparison = null,
+  } = analysis || {};
+
+  // Ensure arrays are actually arrays
+  const safeTopCareerFields = Array.isArray(topCareerFields) ? topCareerFields : [];
+  const safeStrengths = Array.isArray(strengths) ? strengths : [];
+  const safeAreasToImprove = Array.isArray(areasToImprove) ? areasToImprove : [];
+  const safeRecommendedSkills = Array.isArray(recommendedSkills) ? recommendedSkills : [];
+  const safeSuggestedJobRoles = Array.isArray(suggestedJobRoles) ? suggestedJobRoles : [];
+  const safeSixMonthRoadmap = sixMonthRoadmap && typeof sixMonthRoadmap === 'object' ? sixMonthRoadmap : {};
 
   const currentDate = new Date().toLocaleDateString('en-US', {
     year: 'numeric',
@@ -528,16 +537,16 @@ const generateHtml = (analysis, userInfo) => {
           </tr>
         </thead>
         <tbody>
-          ${topCareerFields.map(field => `
+          ${safeTopCareerFields.map(field => `
             <tr>
-              <td class="rank">${field.rank}</td>
-              <td><strong>${field.name}</strong></td>
+              <td class="rank">${field.rank || 1}</td>
+              <td><strong>${field.name || 'Karyera Sahəsi'}</strong></td>
               <td class="percentage">
-                <span class="percentage-badge ${field.matchPercentage >= 80 ? 'percentage-high' : field.matchPercentage >= 60 ? 'percentage-medium' : 'percentage-low'}">
-                  ${field.matchPercentage}%
+                <span class="percentage-badge ${(field.matchPercentage || 0) >= 80 ? 'percentage-high' : (field.matchPercentage || 0) >= 60 ? 'percentage-medium' : 'percentage-low'}">
+                  ${field.matchPercentage || 0}%
                 </span>
               </td>
-              <td>${field.reason}</td>
+              <td>${field.reason || 'Sizə uyğundur'}</td>
             </tr>
           `).join('')}
         </tbody>
@@ -551,7 +560,7 @@ const generateHtml = (analysis, userInfo) => {
         Your Strengths
       </h2>
       <ul class="styled-list">
-        ${strengths.map(strength => `<li>✨ ${strength}</li>`).join('')}
+        ${safeStrengths.map(strength => `<li>✨ ${strength}</li>`).join('')}
       </ul>
     </div>
     
@@ -562,7 +571,7 @@ const generateHtml = (analysis, userInfo) => {
         Areas to Improve
       </h2>
       <ul class="styled-list">
-        ${areasToImprove.map(area => `<li>📈 ${area}</li>`).join('')}
+        ${safeAreasToImprove.map(area => `<li>📈 ${area}</li>`).join('')}
       </ul>
     </div>
     
@@ -573,13 +582,13 @@ const generateHtml = (analysis, userInfo) => {
         Recommended Skills to Develop
       </h2>
       <div class="skills-grid">
-        ${recommendedSkills.map(skill => `
+        ${safeRecommendedSkills.map(skill => `
           <div class="skill-card">
             <h4>
-              ${skill.skill}
-              <span class="skill-importance importance-${skill.importance.toLowerCase()}">${skill.importance}</span>
+              ${skill.skill || skill.name || 'Bacarıq'}
+              <span class="skill-importance importance-${(skill.importance || 'medium').toLowerCase()}">${skill.importance || 'Medium'}</span>
             </h4>
-            <p>${skill.description}</p>
+            <p>${skill.description || 'Bu bacarıq sizə kömək edəcək'}</p>
           </div>
         `).join('')}
       </div>
@@ -593,13 +602,13 @@ const generateHtml = (analysis, userInfo) => {
         <span class="section-icon">💼</span>
         Suggested Job Roles
       </h2>
-      ${suggestedJobRoles.map(job => `
+      ${safeSuggestedJobRoles.map(job => `
         <div class="job-role">
-          <h4>${job.title}</h4>
-          <p>${job.description}</p>
+          <h4>${job.title || job.name || 'Vəzifə'}</h4>
+          <p>${job.description || 'Bu vəzifə sizə uyğundur'}</p>
           <div class="job-meta">
-            <span>💰 ${job.salaryRange}</span>
-            <span class="demand-${job.demandLevel.toLowerCase()}">📈 ${job.demandLevel} Demand</span>
+            <span>💰 ${job.salaryRange || '1000-3000 AZN'}</span>
+            <span class="demand-${(job.demandLevel || 'high').toLowerCase()}">📈 ${job.demandLevel || 'High'} Demand</span>
           </div>
         </div>
       `).join('')}
@@ -612,15 +621,15 @@ const generateHtml = (analysis, userInfo) => {
         Your 6-Month Career Roadmap
       </h2>
       <div class="roadmap">
-        ${Object.entries(sixMonthRoadmap).map(([key, month], index) => `
+        ${Object.entries(safeSixMonthRoadmap).map(([key, month], index) => `
           <div class="roadmap-month">
             <div class="month-marker">
               <div class="month-number">${index + 1}</div>
             </div>
             <div class="month-content">
-              <h4>${month.title}</h4>
+              <h4>${month && month.title ? month.title : `Ay ${index + 1}`}</h4>
               <ul>
-                ${month.tasks.map(task => `<li>${task}</li>`).join('')}
+                ${(month && Array.isArray(month.tasks) ? month.tasks : []).map(task => `<li>${task}</li>`).join('')}
               </ul>
             </div>
           </div>
