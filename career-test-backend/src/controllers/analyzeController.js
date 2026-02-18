@@ -1,4 +1,4 @@
-const openaiService = require('../services/openaiService');
+const geminiService = require('../services/geminiService');
 const pdfService = require('../services/pdfService');
 const questions = require('../data/questions');
 
@@ -28,8 +28,8 @@ const analyzeTest = async (req, res, next) => {
     console.log(`📊 Total answers: ${answers.length}`);
     console.log(`🎯 Selected career field: ${selectedCareerField || 'None'}`);
 
-    // Step 1: Send answers to OpenAI for analysis
-    const analysisResult = await openaiService.analyzeCareerTest(
+    // Step 1: Send answers to Gemini for analysis
+    const analysisResult = await geminiService.analyzeCareerTest(
       answers,
       userInfo,
       selectedCareerField
@@ -38,7 +38,7 @@ const analyzeTest = async (req, res, next) => {
     console.log('✅ AI Analysis complete');
 
     // Step 2: Generate PDF report
-    const pdfResult = await pdfService.generatePdfReport(analysisResult, userInfo);
+    const pdfResult = await pdfService.generatePdfReport(analysisResult.data, userInfo);
 
     console.log(`📄 PDF generated: ${pdfResult.filename}`);
 
@@ -46,7 +46,7 @@ const analyzeTest = async (req, res, next) => {
     res.json({
       success: true,
       data: {
-        analysis: analysisResult,
+        analysis: analysisResult.data,
         pdfUrl: pdfResult.url,
         pdfFilename: pdfResult.filename,
         generatedAt: new Date().toISOString(),

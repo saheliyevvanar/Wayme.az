@@ -4,8 +4,8 @@ module.exports = {
   port: process.env.PORT || 3001,
   nodeEnv: process.env.NODE_ENV || 'development',
   
-  openai: {
-    apiKey: process.env.OPENAI_API_KEY?.trim(),
+  gemini: {
+    apiKey: process.env.GEMINI_API_KEY?.trim(),
   },
   
   pdf: {
