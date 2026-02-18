@@ -59,8 +59,9 @@ app.use((req, res) => {
 });
 
 // Start server
-app.listen(config.port, () => {
-  console.log(`🚀 Career Test Backend running on port ${config.port}`);
+const PORT = process.env.PORT || 3002;
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 Career Test Backend running on port ${PORT}`);
   console.log(`📁 PDF storage: ${pdfStoragePath}`);
   console.log(`🌐 Environment: ${config.nodeEnv}`);
 });
