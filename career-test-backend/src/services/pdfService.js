@@ -36,13 +36,6 @@ const generatePdfReport = async (analysisResult, userInfo) => {
         '--single-process'  // Railway memory optimization
       ]
     });
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-gpu',
-      ],
-    });
 
     const page = await browser.newPage();
 
