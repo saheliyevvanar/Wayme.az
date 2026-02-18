@@ -31,6 +31,14 @@ const generatePdfReport = async (analysisResult, userInfo) => {
       args: [
         '--no-sandbox',
         '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',  // Disable /dev/shm usage (for low memory)
+        '--disable-gpu',
+        '--single-process'  // Railway memory optimization
+      ]
+    });
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
         '--disable-dev-shm-usage',
         '--disable-gpu',
       ],
