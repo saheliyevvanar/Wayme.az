@@ -1,0 +1,338 @@
+{
+  "exampleRequest": {
+    "userInfo": {
+      "name": "Əli Məmmədov",
+      "age": 23,
+      "education": "Bakı Dövlət Universiteti - İqtisadiyyat",
+      "currentField": "Tələbə"
+    },
+    "selectedCareerField": "Proqramlaşdırma",
+    "answers": [
+      {
+        "questionId": 1,
+        "question": "Which activities do you find most enjoyable in your free time?",
+        "answer": "Building or fixing things with my hands",
+        "value": "A"
+      },
+      {
+        "questionId": 2,
+        "question": "What type of content do you consume most online?",
+        "answer": "Technology and gadget reviews",
+        "value": "A"
+      },
+      {
+        "questionId": 3,
+        "question": "If you could master any skill instantly, which would you choose?",
+        "answer": "Programming or engineering",
+        "value": "A"
+      },
+      {
+        "questionId": 4,
+        "question": "What kind of problems do you enjoy solving?",
+        "answer": "Technical problems with clear solutions",
+        "value": "A"
+      },
+      {
+        "questionId": 5,
+        "question": "Which school subjects did you enjoy or excel at most?",
+        "answer": "Computer Science or Engineering",
+        "value": "A"
+      },
+      {
+        "questionId": 6,
+        "question": "What type of volunteer work appeals to you most?",
+        "answer": "Teaching technology skills to others",
+        "value": "A"
+      },
+      {
+        "questionId": 7,
+        "question": "How would you rate your analytical and logical thinking skills?",
+        "answer": "Excellent - I love breaking down complex problems",
+        "value": "1"
+      },
+      {
+        "questionId": 8,
+        "question": "How comfortable are you with technology and digital tools?",
+        "answer": "Very comfortable - I learn new tools quickly",
+        "value": "1"
+      },
+      {
+        "questionId": 9,
+        "question": "How would you describe your communication skills?",
+        "answer": "Good - I communicate clearly in most situations",
+        "value": "2"
+      },
+      {
+        "questionId": 10,
+        "question": "How creative do you consider yourself?",
+        "answer": "Creative - I enjoy creative problem-solving",
+        "value": "2"
+      },
+      {
+        "questionId": 11,
+        "question": "How well do you handle multiple tasks and deadlines?",
+        "answer": "Good - I manage my time well",
+        "value": "2"
+      },
+      {
+        "questionId": 12,
+        "question": "How would you rate your leadership abilities?",
+        "answer": "Good leader - I can lead when needed",
+        "value": "2"
+      },
+      {
+        "questionId": 13,
+        "question": "How do you prefer to recharge after a long day?",
+        "answer": "Spending time alone with my thoughts or hobbies",
+        "value": "A"
+      },
+      {
+        "questionId": 14,
+        "question": "When making decisions, do you rely more on:",
+        "answer": "Logic, facts, and objective analysis",
+        "value": "A"
+      },
+      {
+        "questionId": 15,
+        "question": "How do you handle unexpected changes or challenges?",
+        "answer": "I adapt quickly and see them as opportunities",
+        "value": "A"
+      },
+      {
+        "questionId": 16,
+        "question": "What motivates you most in your work?",
+        "answer": "Personal growth and learning new things",
+        "value": "D"
+      },
+      {
+        "questionId": 17,
+        "question": "How do you approach learning new things?",
+        "answer": "Learn best through hands-on experience",
+        "value": "D"
+      },
+      {
+        "questionId": 18,
+        "question": "How do you handle criticism or feedback?",
+        "answer": "Welcome it as an opportunity to improve",
+        "value": "A"
+      },
+      {
+        "questionId": 19,
+        "question": "What describes your risk-taking tendency?",
+        "answer": "I take risks when I have done my research",
+        "value": "B"
+      },
+      {
+        "questionId": 20,
+        "question": "What type of work environment do you prefer?",
+        "answer": "Fast-paced startup with lots of variety",
+        "value": "A"
+      },
+      {
+        "questionId": 21,
+        "question": "How do you prefer to collaborate with others?",
+        "answer": "Mix of solo and team work",
+        "value": "E"
+      },
+      {
+        "questionId": 22,
+        "question": "What is your ideal daily work routine?",
+        "answer": "Flexible schedule that I control",
+        "value": "B"
+      },
+      {
+        "questionId": 23,
+        "question": "How important is work-life balance to you?",
+        "answer": "Very important - But flexible when needed",
+        "value": "2"
+      },
+      {
+        "questionId": 24,
+        "question": "What type of tasks energize you the most?",
+        "answer": "Problem-solving and troubleshooting",
+        "value": "A"
+      },
+      {
+        "questionId": 25,
+        "question": "Where do you see yourself in 5 years?",
+        "answer": "Technical expert or specialist in my field",
+        "value": "A"
+      }
+    ]
+  },
+  "exampleResponse": {
+    "success": true,
+    "data": {
+      "analysis": {
+        "primaryCareerField": {
+          "name": "Software Engineering & Development",
+          "description": "Based on your strong analytical skills, technology enthusiasm, hands-on learning preference, and enjoyment of problem-solving, software engineering is an ideal career path. Your logical thinking and adaptability to new technologies make you well-suited for this dynamic field.",
+          "matchPercentage": 94
+        },
+        "topCareerFields": [
+          {
+            "rank": 1,
+            "name": "Software Engineering & Development",
+            "matchPercentage": 94,
+            "reason": "Your logical thinking, technology comfort, preference for building solutions, and hands-on learning style align perfectly with software development."
+          },
+          {
+            "rank": 2,
+            "name": "Data Science & Analytics",
+            "matchPercentage": 85,
+            "reason": "Your analytical mindset, comfort with technical problems, and research-based risk-taking suit data-driven roles well."
+          },
+          {
+            "rank": 3,
+            "name": "Product Management (Tech)",
+            "matchPercentage": 76,
+            "reason": "Your blend of technical understanding, communication skills, and leadership potential make tech product management a viable path."
+          }
+        ],
+        "strengths": [
+          "Exceptional analytical thinking - You naturally deconstruct complex problems into manageable components, essential for debugging and system design",
+          "High technology adaptability - You quickly master new tools and platforms, keeping you relevant in the fast-evolving tech industry",
+          "Growth mindset - Your openness to feedback and continuous learning ensures long-term career development",
+          "Balanced collaboration style - You work effectively both independently and in teams, valuable in modern agile environments"
+        ],
+        "areasToImprove": [
+          "Public speaking confidence - Practice presenting technical concepts to diverse audiences to enhance your leadership potential",
+          "Networking skills - Actively engage in tech communities and professional events to expand career opportunities",
+          "Business acumen - Since your background is in Economics, leverage this by understanding the business impact of technical decisions"
+        ],
+        "recommendedSkills": [
+          {
+            "skill": "Full-Stack Web Development",
+            "importance": "High",
+            "description": "Master both frontend (React, Vue) and backend (Node.js, Python) to become a versatile developer. Start with one stack and expand."
+          },
+          {
+            "skill": "Cloud Platforms (AWS/Azure)",
+            "importance": "High",
+            "description": "Cloud computing is essential for modern applications. AWS certifications can significantly boost your employability."
+          },
+          {
+            "skill": "Version Control (Git)",
+            "importance": "High",
+            "description": "Git is fundamental for all development work. Master branching strategies and collaboration workflows."
+          },
+          {
+            "skill": "System Design",
+            "importance": "Medium",
+            "description": "Understanding scalable architecture is crucial for senior roles. Study common patterns and practice designing systems."
+          },
+          {
+            "skill": "Agile Methodologies",
+            "importance": "Medium",
+            "description": "Most tech companies use Scrum or Kanban. Understanding these improves team collaboration and project delivery."
+          },
+          {
+            "skill": "Technical Communication",
+            "importance": "Medium",
+            "description": "Ability to document code and explain technical concepts clearly accelerates career growth."
+          }
+        ],
+        "suggestedJobRoles": [
+          {
+            "title": "Full-Stack Developer",
+            "description": "Build complete web applications handling both user interface and server-side logic. Ideal for versatile problem-solvers.",
+            "salaryRange": "$60,000 - $140,000",
+            "demandLevel": "High"
+          },
+          {
+            "title": "Backend Developer",
+            "description": "Focus on server-side logic, databases, and APIs. Perfect for those who enjoy deep technical challenges.",
+            "salaryRange": "$70,000 - $150,000",
+            "demandLevel": "High"
+          },
+          {
+            "title": "DevOps Engineer",
+            "description": "Bridge development and operations through automation and infrastructure management.",
+            "salaryRange": "$80,000 - $160,000",
+            "demandLevel": "High"
+          },
+          {
+            "title": "Software Architect",
+            "description": "Design high-level software structures and make key technical decisions. A natural progression for experienced developers.",
+            "salaryRange": "$120,000 - $200,000",
+            "demandLevel": "Medium"
+          }
+        ],
+        "sixMonthRoadmap": {
+          "month1": {
+            "title": "Foundation Building",
+            "tasks": [
+              "Choose your primary tech stack (recommended: JavaScript/Node.js based on market demand)",
+              "Set up development environment (VS Code, Git, Node.js)",
+              "Complete a structured online course (freeCodeCamp, The Odin Project)",
+              "Build your first simple web application"
+            ]
+          },
+          "month2": {
+            "title": "Core Skills Development",
+            "tasks": [
+              "Deep dive into JavaScript fundamentals and ES6+ features",
+              "Learn a frontend framework (React recommended)",
+              "Understand RESTful API concepts",
+              "Practice with coding challenges (30 minutes daily)"
+            ]
+          },
+          "month3": {
+            "title": "Backend & Database",
+            "tasks": [
+              "Learn Node.js and Express.js",
+              "Master SQL and NoSQL databases (PostgreSQL, MongoDB)",
+              "Build a full-stack project with database integration",
+              "Start learning Git collaboration workflows"
+            ]
+          },
+          "month4": {
+            "title": "Portfolio Projects",
+            "tasks": [
+              "Build 2-3 portfolio projects demonstrating different skills",
+              "Deploy projects using Vercel, Railway, or AWS",
+              "Create a professional GitHub profile with good READMEs",
+              "Start your portfolio website"
+            ]
+          },
+          "month5": {
+            "title": "Advanced Topics & Networking",
+            "tasks": [
+              "Learn cloud basics (AWS Free Tier)",
+              "Study system design fundamentals",
+              "Join developer communities (Discord, local meetups)",
+              "Start technical blogging or content creation"
+            ]
+          },
+          "month6": {
+            "title": "Job Preparation & Application",
+            "tasks": [
+              "Prepare your resume highlighting projects and skills",
+              "Practice technical interview questions",
+              "Apply to positions (aim for 10+ applications weekly)",
+              "Conduct informational interviews with professionals"
+            ]
+          }
+        },
+        "motivationalMessage": "Əli, your journey from Economics to Software Engineering is not just possible—it's increasingly common and highly valued! Your analytical background gives you unique problem-solving abilities that many developers lack. The tech industry values diverse perspectives and your economic understanding can help you build products that make real business impact. Remember, many successful developers are self-taught, and your willingness to learn hands-on is exactly what this field rewards. Stay curious, build consistently, and don't be discouraged by bugs—every error is a learning opportunity. Your future in tech is bright, and Azerbaijan's growing tech sector needs passionate developers like you!",
+        "selectedFieldComparison": {
+          "selectedField": "Proqramlaşdırma",
+          "isGoodFit": true,
+          "fitPercentage": 94,
+          "comparison": "Your selection of Programming (Proqramlaşdırma) is an excellent match with your test results. Your answers consistently show traits that successful programmers share: logical thinking, technology comfort, problem-solving enjoyment, and hands-on learning preference. Your Economics background is actually an advantage—FinTech and business software companies highly value developers who understand both technology and business.",
+          "recommendation": "Your instinct is spot-on! Programming is the right choice for you. Given your profile, I recommend starting with web development as it offers the fastest path to employability and allows you to see tangible results quickly, which aligns with your hands-on learning style. As you grow, you can specialize in areas like backend systems, cloud architecture, or even explore the intersection of finance and technology."
+        },
+        "analyzedAt": "2026-02-18T14:30:00.000Z",
+        "userInfo": {
+          "name": "Əli Məmmədov",
+          "age": 23,
+          "education": "Bakı Dövlət Universiteti - İqtisadiyyat"
+        }
+      },
+      "pdfUrl": "http://localhost:3001/pdfs/career-report-f7e8d9c0-a1b2-3456-cdef-789012345678.pdf",
+      "pdfFilename": "career-report-f7e8d9c0-a1b2-3456-cdef-789012345678.pdf",
+      "generatedAt": "2026-02-18T14:30:05.000Z"
+    }
+  },
+  "curlExample": "curl -X POST http://localhost:3001/api/analyze -H \"Content-Type: application/json\" -d '{\"userInfo\":{\"name\":\"Test User\",\"age\":25},\"answers\":[{\"question\":\"Sample question\",\"answer\":\"Sample answer\"}]}'"
+}

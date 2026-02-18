@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Career Assessment Report - [USER_NAME]</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 11pt;
+      line-height: 1.6;
+      color: #1a1a2e;
+      background: #ffffff;
+    }
+    
+    .container {
+      max-width: 100%;
+      padding: 0;
+    }
+    
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 40px 30px;
+      margin: -20mm -15mm 30px -15mm;
+      text-align: center;
+    }
+    
+    .header h1 {
+      font-size: 28pt;
+      font-weight: 700;
+      margin-bottom: 10px;
+      letter-spacing: -0.5px;
+    }
+    
+    .header .subtitle {
+      font-size: 12pt;
+      opacity: 0.9;
+      font-weight: 300;
+    }
+    
+    .header .user-info {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.3);
+    }
+    
+    .header .user-name {
+      font-size: 18pt;
+      font-weight: 600;
+    }
+    
+    .header .report-date {
+      font-size: 10pt;
+      opacity: 0.8;
+      margin-top: 5px;
+    }
+    
+    /* Section Styling */
+    .section {
+      margin-bottom: 30px;
+      page-break-inside: avoid;
+    }
+    
+    .section-title {
+      font-size: 14pt;
+      font-weight: 700;
+      color: #667eea;
+      margin-bottom: 15px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #667eea;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .section-icon {
+      width: 24px;
+      height: 24px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 12pt;
+    }
+    
+    /* Primary Career Field */
+    .primary-field {
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      border-radius: 12px;
+      padding: 25px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .primary-field h3 {
+      font-size: 20pt;
+      color: #1a1a2e;
+      margin-bottom: 10px;
+    }
+    
+    .match-percentage {
+      font-size: 36pt;
+      font-weight: 700;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .match-label {
+      font-size: 10pt;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .primary-description {
+      margin-top: 15px;
+      color: #555;
+      font-size: 11pt;
+    }
+    
+    /* Top Career Fields Table */
+    .career-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    
+    .career-table th {
+      background: #667eea;
+      color: white;
+      padding: 12px 15px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 10pt;
+    }
+    
+    .career-table td {
+      padding: 12px 15px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .career-table tr:nth-child(even) {
+      background: #f8f9fa;
+    }
+    
+    .career-table .rank {
+      width: 50px;
+      text-align: center;
+      font-weight: 700;
+      color: #667eea;
+    }
+    
+    .career-table .percentage {
+      width: 80px;
+      text-align: center;
+    }
+    
+    .percentage-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 10pt;
+    }
+    
+    .percentage-high {
+      background: #d4edda;
+      color: #155724;
+    }
+    
+    .percentage-medium {
+      background: #fff3cd;
+      color: #856404;
+    }
+    
+    .percentage-low {
+      background: #f8d7da;
+      color: #721c24;
+    }
+    
+    /* Lists */
+    .styled-list {
+      list-style: none;
+      padding: 0;
+    }
+    
+    .styled-list li {
+      padding: 10px 15px;
+      margin-bottom: 8px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      border-left: 4px solid #667eea;
+      font-size: 10pt;
+    }
+    
+    .styled-list li strong {
+      color: #667eea;
+    }
+    
+    /* Skills Cards */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+    
+    .skill-card {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 15px;
+      border: 1px solid #eee;
+    }
+    
+    .skill-card h4 {
+      color: #1a1a2e;
+      font-size: 11pt;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .skill-importance {
+      font-size: 8pt;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-weight: 600;
+    }
+    
+    .importance-high {
+      background: #667eea;
+      color: white;
+    }
+    
+    .importance-medium {
+      background: #ffc107;
+      color: #1a1a2e;
+    }
+    
+    .importance-low {
+      background: #6c757d;
+      color: white;
+    }
+    
+    .skill-card p {
+      font-size: 9pt;
+      color: #666;
+      line-height: 1.5;
+    }
+    
+    /* Job Roles */
+    .job-role {
+      background: white;
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 12px;
+    }
+    
+    .job-role h4 {
+      color: #1a1a2e;
+      font-size: 12pt;
+      margin-bottom: 5px;
+    }
+    
+    .job-role p {
+      font-size: 10pt;
+      color: #666;
+      margin-bottom: 8px;
+    }
+    
+    .job-meta {
+      display: flex;
+      gap: 15px;
+      font-size: 9pt;
+    }
+    
+    .job-meta span {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      color: #888;
+    }
+    
+    .demand-high {
+      color: #28a745 !important;
+    }
+    
+    .demand-medium {
+      color: #ffc107 !important;
+    }
+    
+    .demand-low {
+      color: #dc3545 !important;
+    }
+    
+    /* Roadmap */
+    .roadmap {
+      position: relative;
+    }
+    
+    .roadmap-month {
+      display: flex;
+      margin-bottom: 20px;
+      position: relative;
+    }
+    
+    .month-marker {
+      width: 60px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+    
+    .month-number {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 14pt;
+      margin: 0 auto;
+    }
+    
+    .month-content {
+      flex: 1;
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 15px 20px;
+      margin-left: 15px;
+    }
+    
+    .month-content h4 {
+      color: #667eea;
+      font-size: 11pt;
+      margin-bottom: 10px;
+    }
+    
+    .month-content ul {
+      list-style: none;
+      padding: 0;
+    }
+    
+    .month-content li {
+      padding: 5px 0;
+      font-size: 10pt;
+      color: #555;
+      position: relative;
+      padding-left: 20px;
+    }
+    
+    .month-content li:before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: #667eea;
+      font-weight: bold;
+    }
+    
+    /* Comparison Box */
+    .comparison-box {
+      background: linear-gradient(135deg, #fff9e6 0%, #fff3cd 100%);
+      border: 2px solid #ffc107;
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 20px;
+    }
+    
+    .comparison-box h4 {
+      color: #856404;
+      font-size: 12pt;
+      margin-bottom: 10px;
+    }
+    
+    .comparison-box p {
+      font-size: 10pt;
+      color: #666;
+      line-height: 1.6;
+    }
+    
+    .fit-badge {
+      display: inline-block;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 10pt;
+      margin: 10px 0;
+    }
+    
+    .fit-good {
+      background: #d4edda;
+      color: #155724;
+    }
+    
+    .fit-not-good {
+      background: #f8d7da;
+      color: #721c24;
+    }
+    
+    /* Motivational Message */
+    .motivation-box {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border-radius: 12px;
+      padding: 30px;
+      text-align: center;
+      margin-top: 30px;
+    }
+    
+    .motivation-box h3 {
+      font-size: 14pt;
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
+    
+    .motivation-box p {
+      font-size: 12pt;
+      line-height: 1.8;
+      font-style: italic;
+      opacity: 0.95;
+    }
+    
+    /* Footer */
+    .footer {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+      text-align: center;
+      font-size: 9pt;
+      color: #888;
+    }
+    
+    .footer .brand {
+      font-weight: 600;
+      color: #667eea;
+    }
+    
+    /* Page Break Helpers */
+    .page-break {
+      page-break-before: always;
+    }
+    
+    @media print {
+      .section {
+        page-break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h1>Career Assessment Report</h1>
+      <p class="subtitle">Comprehensive Career Analysis & Guidance</p>
+      <div class="user-info">
+        <p class="user-name">[USER_NAME]</p>
+        <p class="report-date">Generated on [DATE]</p>
+      </div>
+    </div>
+    
+    <!-- Primary Career Field -->
+    <div class="section">
+      <div class="primary-field">
+        <p class="match-label">Your Ideal Career Field</p>
+        <h3>[PRIMARY_CAREER_FIELD]</h3>
+        <p class="match-percentage">[MATCH_PERCENTAGE]%</p>
+        <p class="match-label">Match Score</p>
+        <p class="primary-description">[PRIMARY_DESCRIPTION]</p>
+      </div>
+    </div>
+    
+    <!-- Top 3 Career Fields -->
+    <div class="section">
+      <h2 class="section-title">
+        <span class="section-icon">📊</span>
+        Top Career Fields
+      </h2>
+      <table class="career-table">
+        <thead>
+          <tr>
+            <th class="rank">#</th>
+            <th>Career Field</th>
+            <th class="percentage">Match</th>
+            <th>Why It Suits You</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- [TOP_CAREER_FIELDS_ROWS] -->
+          <tr>
+            <td class="rank">1</td>
+            <td><strong>Software Engineering</strong></td>
+            <td class="percentage">
+              <span class="percentage-badge percentage-high">94%</span>
+            </td>
+            <td>Your logical thinking and technology skills make this ideal.</td>
+          </tr>
+          <tr>
+            <td class="rank">2</td>
+            <td><strong>Data Science</strong></td>
+            <td class="percentage">
+              <span class="percentage-badge percentage-high">85%</span>
+            </td>
+            <td>Your analytical mindset suits data-driven roles.</td>
+          </tr>
+          <tr>
+            <td class="rank">3</td>
+            <td><strong>Product Management</strong></td>
+            <td class="percentage">
+              <span class="percentage-badge percentage-medium">76%</span>
+            </td>
+            <td>Your blend of skills suits product roles.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <!-- Strengths -->
+    <div class="section">
+      <h2 class="section-title">
+        <span class="section-icon">💪</span>
+        Your Strengths
+      </h2>
+      <ul class="styled-list">
+        <!-- [STRENGTHS_LIST] -->
+        <li>✨ Strong analytical thinking - You naturally break down complex problems</li>
+        <li>✨ High technology proficiency - You quickly adapt to new tools</li>
+        <li>✨ Self-motivated learner - You proactively seek knowledge</li>
+        <li>✨ Detail-oriented approach - You ensure quality in your work</li>
+      </ul>
+    </div>
+    
+    <!-- Areas to Improve -->
+    <div class="section">
+      <h2 class="section-title">
+        <span class="section-icon">🎯</span>
+        Areas to Improve
+      </h2>
+      <ul class="styled-list">
+        <!-- [AREAS_TO_IMPROVE_LIST] -->
+        <li>📈 Communication skills - Practice explaining technical concepts simply</li>
+        <li>📈 Networking abilities - Expand professional connections</li>
+        <li>📈 Leadership experience - Take on team leadership opportunities</li>
+      </ul>
+    </div>
+    
+    <!-- Recommended Skills -->
+    <div class="section">
+      <h2 class="section-title">
+        <span class="section-icon">🛠️</span>
+        Recommended Skills to Develop
+      </h2>
+      <div class="skills-grid">
+        <!-- [SKILLS_CARDS] -->
+        <div class="skill-card">
+          <h4>
+            Cloud Computing
+            <span class="skill-importance importance-high">High</span>
+          </h4>
+          <p>Cloud skills are essential for modern development. Start with AWS.</p>
+        </div>
+        <div class="skill-card">
+          <h4>
+            System Design
+            <span class="skill-importance importance-high">High</span>
+          </h4>
+          <p>Understanding scalable systems is crucial for senior roles.</p>
+        </div>
+        <div class="skill-card">
+          <h4>
+            Agile Methodologies
+            <span class="skill-importance importance-medium">Medium</span>
+          </h4>
+          <p>Most tech companies use agile practices.</p>
+        </div>
+        <div class="skill-card">
+          <h4>
+            Public Speaking
+            <span class="skill-importance importance-medium">Medium</span>
+          </h4>
+          <p>Presenting ideas clearly enhances career growth.</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="page-break"></div>
+    
+    <!-- Suggested Job Roles -->
+    <div class="section">
+      <h2 class="section-title">
+        <span class="section-icon">💼</span>
+        Suggested Job Roles
+      </h2>
+      <!-- [JOB_ROLES] -->
+      <div class="job-role">
+        <h4>Full-Stack Developer</h4>
+        <p>Build complete web applications handling both frontend and backend.</p>
+        <div class="job-meta">
+          <span>💰 $70,000 - $150,000</span>
+          <span class="demand-high">📈 High Demand</span>
+        </div>
+      </div>
+      <div class="job-role">
+        <h4>Software Engineer</h4>
+        <p>Design, develop, and maintain software systems and applications.</p>
+        <div class="job-meta">
+          <span>💰 $80,000 - $180,000</span>
+          <span class="demand-high">📈 High Demand</span>
+        </div>
+      </div>
+      <div class="job-role">
+        <h4>DevOps Engineer</h4>
+        <p>Bridge development and operations, automating deployment.</p>
+        <div class="job-meta">
+          <span>💰 $90,000 - $160,000</span>
+          <span class="demand-high">📈 High Demand</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 6-Month Roadmap -->
+    <div class="section">
+      <h2 class="section-title">
+        <span class="section-icon">🗺️</span>
+        Your 6-Month Career Roadmap
+      </h2>
+      <div class="roadmap">
+        <!-- [ROADMAP_MONTHS] -->
+        <div class="roadmap-month">
+          <div class="month-marker">
+            <div class="month-number">1</div>
+          </div>
+          <div class="month-content">
+            <h4>Foundation</h4>
+            <ul>
+              <li>Assess current skill gaps</li>
+              <li>Set up learning schedule</li>
+              <li>Choose primary technology stack</li>
+            </ul>
+          </div>
+        </div>
+        <div class="roadmap-month">
+          <div class="month-marker">
+            <div class="month-number">2</div>
+          </div>
+          <div class="month-content">
+            <h4>Skill Building</h4>
+            <ul>
+              <li>Complete online courses</li>
+              <li>Start personal project</li>
+              <li>Join developer communities</li>
+            </ul>
+          </div>
+        </div>
+        <div class="roadmap-month">
+          <div class="month-marker">
+            <div class="month-number">3</div>
+          </div>
+          <div class="month-content">
+            <h4>Practice</h4>
+            <ul>
+              <li>Complete first project</li>
+              <li>Contribute to open source</li>
+              <li>Learn cloud platforms</li>
+            </ul>
+          </div>
+        </div>
+        <div class="roadmap-month">
+          <div class="month-marker">
+            <div class="month-number">4</div>
+          </div>
+          <div class="month-content">
+            <h4>Portfolio Building</h4>
+            <ul>
+              <li>Build 2-3 portfolio projects</li>
+              <li>Create GitHub profile</li>
+              <li>Deploy portfolio website</li>
+            </ul>
+          </div>
+        </div>
+        <div class="roadmap-month">
+          <div class="month-marker">
+            <div class="month-number">5</div>
+          </div>
+          <div class="month-content">
+            <h4>Networking</h4>
+            <ul>
+              <li>Attend tech meetups</li>
+              <li>Connect with professionals</li>
+              <li>Start technical writing</li>
+            </ul>
+          </div>
+        </div>
+        <div class="roadmap-month">
+          <div class="month-marker">
+            <div class="month-number">6</div>
+          </div>
+          <div class="month-content">
+            <h4>Job Search</h4>
+            <ul>
+              <li>Update resume</li>
+              <li>Apply to positions weekly</li>
+              <li>Practice interviews</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Field Comparison (Optional) -->
+    <div class="section">
+      <div class="comparison-box">
+        <h4>📋 Your Selected Field Analysis: [SELECTED_FIELD]</h4>
+        <span class="fit-badge fit-good">
+          ✓ Good Fit - 94% Match
+        </span>
+        <p><strong>Comparison:</strong> Your selection aligns excellently with our analysis. Your skills and interests match the requirements of this field.</p>
+        <p style="margin-top: 10px;"><strong>Our Recommendation:</strong> Your instinct is correct! Continue pursuing this field with confidence.</p>
+      </div>
+    </div>
+    
+    <!-- Motivational Message -->
+    <div class="motivation-box">
+      <h3>💫 A Message For You</h3>
+      <p>"Your unique combination of skills and interests positions you perfectly for success. Remember, every expert was once a beginner. Stay curious, keep learning, and don't be afraid to take that first step. Your future is bright!"</p>
+    </div>
+    
+    <!-- Footer -->
+    <div class="footer">
+      <p>This report was generated by <span class="brand">WAYME Career Assessment Platform</span></p>
+      <p>© 2026 WAYME. All rights reserved.</p>
+      <p style="margin-top: 10px; font-size: 8pt;">
+        This assessment is based on AI analysis and should be used as guidance only. 
+        We recommend consulting with career professionals for personalized advice.
+      </p>
+    </div>
+  </div>
+</body>
+</html>
