@@ -68,7 +68,7 @@ const Header = () => {
                 </span>
               </button>
             ) : (
-              <Link href="/about">
+              <Link href="/haqq;mda">
                 <button className='flex items-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 rounded-[14px] text-white bg-transparent relative overflow-hidden group cursor-pointer'>
                   <span className='absolute inset-0 rounded-[14px] p-[1.5px] bg-gradient-to-r from-[#2B7FFF] via-[#AD46FF] to-[#F6339A]'>
                     <span className='flex h-full w-full rounded-[14px] bg-[#091E3E]'></span>
