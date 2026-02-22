@@ -167,20 +167,6 @@ export default function AboutPage() {
                             ))}
                         </div>
                     </div>
-                                    iconBg: "bg-gradient-to-br from-amber-500 to-orange-500",
-                                    borderColor: "group-hover:border-orange-500/30"
-                                }
-                            ].map((item, i) => (
-                                <div key={i} className={`bg-[#102A4D]/40 backdrop-blur-sm rounded-2xl p-6 border border-white/5 h-full transition-all duration-300 hover:-translate-y-1 hover:bg-[#102A4D]/60 group ${item.borderColor}`}>
-                                    <div className={`w-12 h-12 rounded-xl ${item.iconBg} flex items-center justify-center mb-4 shadow-lg`}>
-                                        <item.icon size={24} className="text-white" strokeWidth={1.5} />
-                                    </div>
-                                    <h3 className="text-lg font-bold mb-2 text-white">{item.title}</h3>
-                                    <p className="text-gray-400 text-sm leading-relaxed">{item.desc}</p>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
 
                     {/* Our Values */}
                     <div className="mb-24">
