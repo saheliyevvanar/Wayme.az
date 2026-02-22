@@ -38,8 +38,22 @@ const iconMap: { [key: string]: LucideIcon } = {
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://wayme-az.railway.app'
 
+// Fallback data - API işləməyəndə istifadə olunur
+const fallbackData: AboutUsItem[] = [
+    { id: 1, sectionType: 'mission', title: 'Missiyamız', description: 'Hər bir gəncin öz potensialını kəşf etməsinə və doğru karyera yolunu tapmasına kömək etmək. Biz inanırıq ki, düzgün istiqamətləndirmə ilə hər kəs uğurlu ola bilər.', iconName: 'Target', displayOrder: 1 },
+    { id: 2, sectionType: 'vision', title: 'Vizyonumuz', description: 'Azərbaycanda karyera istiqamətləndirmə sahəsində lider platforma olmaq və minlərlə gəncin peşəkar həyatına müsbət təsir göstərmək.', iconName: 'Lightbulb', displayOrder: 2 },
+    { id: 3, sectionType: 'values', title: 'Obyektivlik', description: 'Qərəzsiz və elmi əsaslara söykənən tövsiyyələr veririk.', iconName: 'Award', displayOrder: 1 },
+    { id: 4, sectionType: 'values', title: 'Əlçatanlıq', description: 'Xidmətlərimizi hər kəs üçün əlçatan edirik.', iconName: 'Heart', displayOrder: 2 },
+    { id: 5, sectionType: 'values', title: 'Keyfiyyət', description: 'Ən yaxşı nəticələri təmin etmək üçün daim inkişaf edirik.', iconName: 'TrendingUp', displayOrder: 3 },
+    { id: 6, sectionType: 'services', title: 'Psixoloji təhlil', description: 'Şəxsiyyət tipinizi və güclü tərəflərinizi müəyyən edirik.', iconName: 'BrainCircuit', displayOrder: 1 },
+    { id: 7, sectionType: 'services', title: 'Peşə uyğunluğu', description: 'Bacarıqlarınıza uyğun peşələri tövsiyə edirik.', iconName: 'ClipboardCheck', displayOrder: 2 },
+    { id: 8, sectionType: 'services', title: 'İnkişaf planı', description: 'Fərdi karyera inkişaf planı hazırlayırıq.', iconName: 'TrendingUp', displayOrder: 3 },
+    { id: 9, sectionType: 'services', title: 'AI dəstəyi', description: 'Süni intellekt ilə dəqiq təhlil və tövsiyyələr.', iconName: 'Bot', displayOrder: 4 },
+    { id: 10, sectionType: 'contact', title: 'Bizimlə əlaqə', description: 'Suallarınız var? Bizimlə əlaqə saxlayın, sizə kömək etməkdən məmnun olarıq.', iconName: 'Mail', displayOrder: 1 }
+]
+
 export default function AboutPage() {
-    const [aboutData, setAboutData] = useState<AboutUsItem[]>([])
+    const [aboutData, setAboutData] = useState<AboutUsItem[]>(fallbackData)
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
@@ -48,7 +62,9 @@ export default function AboutPage() {
                 const response = await fetch(`${API_URL}/api/about-us`)
                 if (response.ok) {
                     const data = await response.json()
-                    setAboutData(data)
+                    if (data && data.length > 0) {
+                        setAboutData(data)
+                    }
                 }
             } catch (error) {
                 console.error('Məlumat yüklənərkən xəta:', error)
