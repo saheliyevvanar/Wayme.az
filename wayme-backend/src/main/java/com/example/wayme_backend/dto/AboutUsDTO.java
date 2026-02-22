@@ -1,7 +1,5 @@
 package com.example.wayme_backend.dto;
 
-import java.time.LocalDateTime;
-
 public class AboutUsDTO {
     private Long id;
     private String sectionType;
@@ -9,8 +7,6 @@ public class AboutUsDTO {
     private String description;
     private String iconName;
     private Integer displayOrder;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 
     // Constructors
     public AboutUsDTO() {
@@ -72,21 +68,5 @@ public class AboutUsDTO {
 
     public void setDisplayOrder(Integer displayOrder) {
         this.displayOrder = displayOrder;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
     }
 }

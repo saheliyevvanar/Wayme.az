@@ -11,7 +11,8 @@ import {
     Bot,
     Heart,
     Award,
-    Mail
+    Mail,
+    LucideIcon
 } from 'lucide-react'
 
 interface AboutUsItem {
@@ -23,49 +24,49 @@ interface AboutUsItem {
     displayOrder: number
 }
 
-const iconMap: { [key: string]: React.ReactNode } = {
-    Target: Target,
-    Lightbulb: Lightbulb,
-    BrainCircuit: BrainCircuit,
-    ClipboardCheck: ClipboardCheck,
-    TrendingUp: TrendingUp,
-    Bot: Bot,
-    Heart: Heart,
-    Award: Award,
-    Mail: Mail
+const iconMap: { [key: string]: LucideIcon } = {
+    Target,
+    Lightbulb,
+    BrainCircuit,
+    ClipboardCheck,
+    TrendingUp,
+    Bot,
+    Heart,
+    Award,
+    Mail
 }
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://wayme-az.railway.app'
+
 export default function AboutPage() {
-    const [aboutUsData, setAboutUsData] = useState<AboutUsItem[]>([])
+    const [aboutData, setAboutData] = useState<AboutUsItem[]>([])
     const [loading, setLoading] = useState(true)
-    const [error, setError] = useState<string | null>(null)
 
     useEffect(() => {
-        const fetchAboutUs = async () => {
+        const fetchData = async () => {
             try {
-                const response = await fetch('/api/about-us')
-                if (!response.ok) throw new Error('Failed to fetch about us data')
-                const data = await response.json()
-                setAboutUsData(data)
-            } catch (err) {
-                console.error('Error fetching about us data:', err)
-                setError('Failed to load about us data')
+                const response = await fetch(`${API_URL}/api/about-us`)
+                if (response.ok) {
+                    const data = await response.json()
+                    setAboutData(data)
+                }
+            } catch (error) {
+                console.error('Məlumat yüklənərkən xəta:', error)
             } finally {
                 setLoading(false)
             }
         }
-        fetchAboutUs()
+        fetchData()
     }, [])
 
-    const getMissionData = () => aboutUsData.filter(item => item.sectionType === 'mission')
-    const getVisionData = () => aboutUsData.filter(item => item.sectionType === 'vision')
-    const getValuesData = () => aboutUsData.filter(item => item.sectionType === 'values')
-    const getServicesData = () => aboutUsData.filter(item => item.sectionType === 'services')
-    const getContactData = () => aboutUsData.filter(item => item.sectionType === 'contact')
+    const getDataBySection = (section: string) => aboutData.filter(item => item.sectionType === section)
+    const getIcon = (iconName: string): LucideIcon => iconMap[iconName] || Target
 
-    const getIconComponent = (iconName: string) => {
-        return iconMap[iconName] || Target
-    }
+    const mission = getDataBySection('mission')[0]
+    const vision = getDataBySection('vision')[0]
+    const services = getDataBySection('services')
+    const values = getDataBySection('values')
+    const contact = getDataBySection('contact')[0]
 
     if (loading) {
         return (
@@ -101,110 +102,108 @@ export default function AboutPage() {
                     {/* Mission & Vision */}
                     <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-6 mb-24">
                         {/* Mission */}
-                        {getMissionData().map((mission, idx) => (
-                            <div key={idx} className="bg-[#102A4D]/50 backdrop-blur-sm rounded-3xl p-8 border border-white/5 hover:border-blue-500/30 transition-all duration-300 hover:-translate-y-1">
+                        {mission && (
+                            <div className="bg-[#102A4D]/50 backdrop-blur-sm rounded-3xl p-8 border border-white/5 hover:border-blue-500/30 transition-all duration-300 hover:-translate-y-1">
                                 <div className="flex items-start gap-5">
                                     <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shrink-0 shadow-lg shadow-blue-900/20">
-                                        {React.createElement(getIconComponent(mission.iconName) as React.ComponentType<{ size: number; className: string; strokeWidth: number }>, {
-                                            size: 28,
-                                            className: 'text-white',
-                                            strokeWidth: 1.5
-                                        })}
+                                        {React.createElement(getIcon(mission.iconName), { size: 28, className: "text-white", strokeWidth: 1.5 })}
                                     </div>
                                     <div>
                                         <h2 className="text-xl font-bold mb-3 text-white">{mission.title}</h2>
-                                        <p className="text-gray-400 text-sm leading-relaxed">
-                                            {mission.description}
-                                        </p>
+                                        <p className="text-gray-400 text-sm leading-relaxed">{mission.description}</p>
                                     </div>
                                 </div>
                             </div>
-                        ))}
+                        )}
 
                         {/* Vision */}
-                        {getVisionData().map((vision, idx) => (
-                            <div key={idx} className="bg-[#102A4D]/50 backdrop-blur-sm rounded-3xl p-8 border border-white/5 hover:border-pink-500/30 transition-all duration-300 hover:-translate-y-1">
+                        {vision && (
+                            <div className="bg-[#102A4D]/50 backdrop-blur-sm rounded-3xl p-8 border border-white/5 hover:border-pink-500/30 transition-all duration-300 hover:-translate-y-1">
                                 <div className="flex items-start gap-5">
                                     <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center shrink-0 shadow-lg shadow-pink-900/20">
-                                        {React.createElement(getIconComponent(vision.iconName) as React.ComponentType<{ size: number; className: string; strokeWidth: number }>, {
-                                            size: 28,
-                                            className: 'text-white',
-                                            strokeWidth: 1.5
-                                        })}
+                                        {React.createElement(getIcon(vision.iconName), { size: 28, className: "text-white", strokeWidth: 1.5 })}
                                     </div>
                                     <div>
                                         <h2 className="text-xl font-bold mb-3 text-white">{vision.title}</h2>
-                                        <p className="text-gray-400 text-sm leading-relaxed">
-                                            {vision.description}
-                                        </p>
+                                        <p className="text-gray-400 text-sm leading-relaxed">{vision.description}</p>
                                     </div>
                                 </div>
                             </div>
-                        ))}
+                        )}
                     </div>
 
                     {/* What we offer */}
-                    <div className="mb-24">
-                        <div className="text-center mb-12">
-                            <h2 className="text-3xl md:text-4xl font-bold inline-block" style={{ background: 'linear-gradient(to right, #2B7FFF, #AD46FF, #F6339A)', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent', paddingBottom: '5px' }}>
-                                Nə təklif edirik
-                            </h2>
-                        </div>
+                    {services.length > 0 && (
+                        <div className="mb-24">
+                            <div className="text-center mb-12">
+                                <h2 className="text-3xl md:text-4xl font-bold inline-block" style={{ background: 'linear-gradient(to right, #2B7FFF, #AD46FF, #F6339A)', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent', paddingBottom: '5px' }}>
+                                    Nə təklif edirik
+                                </h2>
+                            </div>
 
-                        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                            {getServicesData().map((service, i) => (
-                                <div key={i} className={`bg-[#102A4D]/40 backdrop-blur-sm rounded-2xl p-6 border border-white/5 h-full transition-all duration-300 hover:-translate-y-1 hover:bg-[#102A4D]/60 group`}>
-                                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center mb-4 shadow-lg`}>
-                                        {React.createElement(getIconComponent(service.iconName) as React.ComponentType<{ size: number; className: string; strokeWidth: number }>, {
-                                            size: 24,
-                                            className: 'text-white',
-                                            strokeWidth: 1.5
-                                        })}
-                                    </div>
-                                    <h3 className="text-lg font-bold mb-2 text-white">{service.title}</h3>
-                                    <p className="text-gray-400 text-sm leading-relaxed">{service.description}</p>
-                                </div>
-                            ))}
+                            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                                {services.map((service, i) => {
+                                    const gradients = [
+                                        "bg-gradient-to-br from-blue-500 to-cyan-500",
+                                        "bg-gradient-to-br from-emerald-500 to-green-500",
+                                        "bg-gradient-to-br from-purple-500 to-violet-500",
+                                        "bg-gradient-to-br from-amber-500 to-orange-500"
+                                    ]
+                                    const IconComponent = getIcon(service.iconName)
+                                    return (
+                                        <div key={service.id} className="bg-[#102A4D]/40 backdrop-blur-sm rounded-2xl p-6 border border-white/5 h-full transition-all duration-300 hover:-translate-y-1 hover:bg-[#102A4D]/60 group">
+                                            <div className={`w-12 h-12 rounded-xl ${gradients[i % gradients.length]} flex items-center justify-center mb-4 shadow-lg`}>
+                                                <IconComponent size={24} className="text-white" strokeWidth={1.5} />
+                                            </div>
+                                            <h3 className="text-lg font-bold mb-2 text-white">{service.title}</h3>
+                                            <p className="text-gray-400 text-sm leading-relaxed">{service.description}</p>
+                                        </div>
+                                    )
+                                })}
+                            </div>
                         </div>
-                    </div>
+                    )}
 
                     {/* Our Values */}
-                    <div className="mb-24">
-                        <div className="text-center mb-12">
-                            <h2 className="text-3xl md:text-4xl font-bold inline-block" style={{ background: 'linear-gradient(to right, #2B7FFF, #AD46FF, #F6339A)', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent', paddingBottom: '5px' }}>
-                                Dəyərlərimiz
-                            </h2>
-                        </div>
+                    {values.length > 0 && (
+                        <div className="mb-24">
+                            <div className="text-center mb-12">
+                                <h2 className="text-3xl md:text-4xl font-bold inline-block" style={{ background: 'linear-gradient(to right, #2B7FFF, #AD46FF, #F6339A)', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent', paddingBottom: '5px' }}>
+                                    Dəyərlərimiz
+                                </h2>
+                            </div>
 
-                        <div className="grid md:grid-cols-3 gap-6">
-                            {getValuesData().map((value, i) => (
-                                <div key={i} className="bg-[#102A4D]/40 backdrop-blur-sm rounded-2xl p-8 border border-white/5 hover:bg-[#102A4D]/60 transition-colors duration-300">
-                                    <div className="flex items-center gap-4 mb-4">
-                                        <div className="p-2 rounded-lg bg-blue-500/10">
-                                            {React.createElement(getIconComponent(value.iconName) as React.ComponentType<{ size: number; className: string; strokeWidth: number }>, {
-                                                size: 24,
-                                                className: 'text-blue-400',
-                                                strokeWidth: 1.5
-                                            })}
+                            <div className="grid md:grid-cols-3 gap-6">
+                                {values.map((value, i) => {
+                                    const colors = [
+                                        { text: "text-blue-400", bg: "bg-blue-500/10" },
+                                        { text: "text-emerald-400", bg: "bg-emerald-500/10" },
+                                        { text: "text-amber-400", bg: "bg-amber-500/10" }
+                                    ]
+                                    const IconComponent = getIcon(value.iconName)
+                                    const colorSet = colors[i % colors.length]
+                                    return (
+                                        <div key={value.id} className="bg-[#102A4D]/40 backdrop-blur-sm rounded-2xl p-8 border border-white/5 hover:bg-[#102A4D]/60 transition-colors duration-300">
+                                            <div className="flex items-center gap-4 mb-4">
+                                                <div className={`p-2 rounded-lg ${colorSet.bg}`}>
+                                                    <IconComponent size={24} className={colorSet.text} strokeWidth={1.5} />
+                                                </div>
+                                                <h3 className="text-lg font-bold text-white">{value.title}</h3>
+                                            </div>
+                                            <p className="text-gray-400 text-sm leading-relaxed">{value.description}</p>
                                         </div>
-                                        <h3 className="text-lg font-bold text-white">
-                                            {value.title}
-                                        </h3>
-                                    </div>
-                                    <p className="text-gray-400 text-sm leading-relaxed">{value.description}</p>
-                                </div>
-                            ))}
+                                    )
+                                })}
+                            </div>
                         </div>
-                    </div>
+                    )}
 
                     {/* Contact */}
-                    <div className="max-w-2xl mx-auto mb-4">
-                        {getContactData().map((contact, idx) => (
-                            <div key={idx} className="bg-gradient-to-b from-[#102A4D]/80 to-[#0B1D36]/80 backdrop-blur-md border border-white/10 rounded-3xl p-10 text-center hover:border-blue-500/20 transition-all duration-300">
+                    {contact && (
+                        <div className="max-w-2xl mx-auto mb-4">
+                            <div className="bg-gradient-to-b from-[#102A4D]/80 to-[#0B1D36]/80 backdrop-blur-md border border-white/10 rounded-3xl p-10 text-center hover:border-blue-500/20 transition-all duration-300">
                                 <h2 className="text-2xl font-bold text-white mb-3">{contact.title}</h2>
-                                <p className="text-gray-400 mb-6 text-sm max-w-sm mx-auto">
-                                    {contact.description}
-                                </p>
+                                <p className="text-gray-400 mb-6 text-sm max-w-sm mx-auto">{contact.description}</p>
                                 <a
                                     href="mailto:Wayme.az@gmail.com"
                                     className="inline-flex items-center justify-center px-8 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-medium transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20 active:scale-95"
@@ -212,8 +211,8 @@ export default function AboutPage() {
                                     Wayme.az@gmail.com
                                 </a>
                             </div>
-                        ))}
-                    </div>
+                        </div>
+                    )}
 
                 </Container>
             </main>
@@ -221,3 +220,4 @@ export default function AboutPage() {
             <Footer />
         </div>
     )
+}

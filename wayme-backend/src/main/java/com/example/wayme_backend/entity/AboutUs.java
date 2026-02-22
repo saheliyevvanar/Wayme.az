@@ -11,7 +11,7 @@ public class AboutUs {
     private Long id;
 
     @Column(nullable = false)
-    private String sectionType; // "mission", "vision", "value", "service", "contact"
+    private String sectionType; // "mission", "vision", "values", "services", "contact"
 
     @Column(nullable = false)
     private String title;
@@ -25,14 +25,16 @@ public class AboutUs {
     @Column(name = "display_order")
     private Integer displayOrder;
 
-    @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(nullable = false)
     private LocalDateTime createdAt;
 
-    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    @Column
     private LocalDateTime updatedAt;
 
     // Constructors
     public AboutUs() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
     public AboutUs(String sectionType, String title, String description, String iconName, Integer displayOrder) {
