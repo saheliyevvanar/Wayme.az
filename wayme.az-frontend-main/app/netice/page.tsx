@@ -120,18 +120,6 @@ export default function ResultPage() {
                     <div className="absolute -right-[10%] bottom-[20%] h-[50%] w-[50%] rounded-full bg-purple-600/10 blur-[120px] animate-pulse-slow" />
                 </div>
 
-                {/* Back Button - Fixed Position */}
-                <Link href="/">
-                    <button className='fixed left-6 top-6 z-50 flex items-center gap-2 px-4 py-2 rounded-xl text-white bg-transparent relative overflow-hidden group cursor-pointer'>
-                        <span className='absolute inset-0 rounded-xl p-[1.5px] bg-gradient-to-r from-[#2B7FFF] via-[#AD46FF] to-[#F6339A]'>
-                            <span className='flex h-full w-full rounded-xl bg-[#091E3E]'></span>
-                        </span>
-                        <span className='relative z-10 flex items-center gap-2 text-sm font-medium'>
-                            <ArrowLeft size={18} /> Ana səhifəyə qayıt
-                        </span>
-                    </button>
-                </Link>
-
                 <div className="w-full max-w-[800px] z-10 space-y-6 animate-in fade-in duration-700 slide-in-from-bottom-4">
 
                     <div className="glass-card rounded-[32px] p-6 md:p-10 border border-white/10 shadow-2xl bg-[#102A4D]/40 backdrop-blur-xl">
