@@ -107,15 +107,18 @@ export default function AboutPage() {
 
             <main className="flex-grow pt-32 pb-0 relative z-10 px-4">
                 <Container>
-                    {/* Back Button */}
-                    <div className="mb-8">
+                    {/* Step Indicator */}
+                    <div className="mb-8 flex items-center justify-between">
                         <Link href="/">
                             <button className='flex items-center gap-2 px-4 py-2 rounded-xl text-gray-300 hover:text-white transition-colors duration-300 hover:bg-white/5'>
                                 <ArrowLeft size={20} />
                                 <span className="text-sm font-medium">Əsas səhifəyə qayıt</span>
                             </button>
                         </Link>
+                        <div className="text-gray-400 text-sm font-medium">Addım 1/6</div>
                     </div>
+
+                    {/* Back Button */}
 
                     {/* Hero Header */}
                     <div className="text-center mb-20 space-y-4">
