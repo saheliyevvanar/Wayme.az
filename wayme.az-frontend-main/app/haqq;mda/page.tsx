@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react'
 import Footer from '../../Components/Layout/Footer'
 import Container from '../../Components/Container/page'
+import Link from 'next/link'
 import {
     Target,
     Lightbulb,
@@ -12,6 +13,7 @@ import {
     Heart,
     Award,
     Mail,
+    ArrowLeft,
     LucideIcon
 } from 'lucide-react'
 
@@ -105,6 +107,16 @@ export default function AboutPage() {
 
             <main className="flex-grow pt-32 pb-0 relative z-10 px-4">
                 <Container>
+                    {/* Back Button */}
+                    <div className="mb-8">
+                        <Link href="/">
+                            <button className='flex items-center gap-2 px-4 py-2 rounded-xl text-gray-300 hover:text-white transition-colors duration-300 hover:bg-white/5'>
+                                <ArrowLeft size={20} />
+                                <span className="text-sm font-medium">Əsas səhifəyə qayıt</span>
+                            </button>
+                        </Link>
+                    </div>
+
                     {/* Hero Header */}
                     <div className="text-center mb-20 space-y-4">
                         <h1 className="text-4xl md:text-5xl font-bold tracking-tight inline-block" style={{ background: 'linear-gradient(to right, #2B7FFF, #AD46FF, #F6339A)', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent', paddingBottom: '5px' }}>
