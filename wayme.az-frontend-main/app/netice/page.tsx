@@ -120,9 +120,9 @@ export default function ResultPage() {
                     <div className="absolute -right-[10%] bottom-[20%] h-[50%] w-[50%] rounded-full bg-purple-600/10 blur-[120px] animate-pulse-slow" />
                 </div>
 
-                {/* Left Navigation Button - Top Left */}
+                {/* Back Button - Fixed Position */}
                 <Link href="/">
-                    <button className='absolute left-6 top-6 z-50 flex items-center gap-2 px-4 py-2 rounded-xl text-white bg-transparent relative overflow-hidden group cursor-pointer'>
+                    <button className='fixed left-6 top-24 z-50 flex items-center gap-2 px-4 py-2 rounded-xl text-white bg-transparent relative overflow-hidden group cursor-pointer'>
                         <span className='absolute inset-0 rounded-xl p-[1.5px] bg-gradient-to-r from-[#2B7FFF] via-[#AD46FF] to-[#F6339A]'>
                             <span className='flex h-full w-full rounded-xl bg-[#091E3E]'></span>
                         </span>
