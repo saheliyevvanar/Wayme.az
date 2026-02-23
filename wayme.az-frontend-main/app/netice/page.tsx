@@ -121,18 +121,16 @@ export default function ResultPage() {
                 </div>
 
                 {/* Back Button - Top Left */}
-                <div className="absolute top-6 left-6 z-20">
-                    <Link href="/">
-                        <button className='flex items-center gap-2 px-4 py-2 rounded-xl text-white bg-transparent relative overflow-hidden group cursor-pointer'>
-                            <span className='absolute inset-0 rounded-xl p-[1.5px] bg-gradient-to-r from-[#2B7FFF] via-[#AD46FF] to-[#F6339A]'>
-                                <span className='flex h-full w-full rounded-xl bg-[#091E3E]'></span>
-                            </span>
-                            <span className='relative z-10 flex items-center gap-2 text-sm font-medium'>
-                                <ArrowLeft size={18} /> Ana səhifəyə qayıt
-                            </span>
-                        </button>
-                    </Link>
-                </div>
+                <Link href="/">
+                    <button className='absolute top-6 left-6 z-50 flex items-center gap-2 px-4 py-2 rounded-xl text-white bg-transparent relative overflow-hidden group cursor-pointer'>
+                        <span className='absolute inset-0 rounded-xl p-[1.5px] bg-gradient-to-r from-[#2B7FFF] via-[#AD46FF] to-[#F6339A]'>
+                            <span className='flex h-full w-full rounded-xl bg-[#091E3E]'></span>
+                        </span>
+                        <span className='relative z-10 flex items-center gap-2 text-sm font-medium'>
+                            <ArrowLeft size={18} /> Ana səhifəyə qayıt
+                        </span>
+                    </button>
+                </Link>
 
                 <div className="w-full max-w-[800px] z-10 space-y-6 animate-in fade-in duration-700 slide-in-from-bottom-4">
 
