@@ -120,12 +120,16 @@ export default function ResultPage() {
                     <div className="absolute -right-[10%] bottom-[20%] h-[50%] w-[50%] rounded-full bg-purple-600/10 blur-[120px] animate-pulse-slow" />
                 </div>
 
-                {/* Close Button - Top Right */}
-                <div className="absolute top-6 right-6 z-20">
+                {/* Back Button - Top Left */}
+                <div className="absolute top-6 left-6 z-20">
                     <Link href="/">
-                        <button className='flex items-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-all duration-300'>
-                            <X size={20} />
-                            <span className="text-sm font-medium">Əsas</span>
+                        <button className='flex items-center gap-2 px-4 py-2 rounded-xl text-white bg-transparent relative overflow-hidden group cursor-pointer'>
+                            <span className='absolute inset-0 rounded-xl p-[1.5px] bg-gradient-to-r from-[#2B7FFF] via-[#AD46FF] to-[#F6339A]'>
+                                <span className='flex h-full w-full rounded-xl bg-[#091E3E]'></span>
+                            </span>
+                            <span className='relative z-10 flex items-center gap-2 text-sm font-medium'>
+                                <ArrowLeft size={18} /> Ana səhifəyə qayıt
+                            </span>
                         </button>
                     </Link>
                 </div>
