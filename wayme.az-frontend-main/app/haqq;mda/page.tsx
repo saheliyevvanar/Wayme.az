@@ -115,7 +115,7 @@ export default function AboutPage() {
                                 <span className="text-sm font-medium">Əsas səhifəyə qayıt</span>
                             </button>
                         </Link>
-                        <div className="text-gray-400 text-sm font-medium">Addım 1/6</div>
+                        <div className="text-gray-400 text-sm font-medium">Addım 1/4</div>
                     </div>
 
                     {/* Back Button */}
