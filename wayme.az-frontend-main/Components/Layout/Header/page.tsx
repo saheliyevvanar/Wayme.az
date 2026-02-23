@@ -68,16 +68,23 @@ const Header = () => {
                 </span>
               </button>
             ) : (
-              <Link href="/haqq;mda">
-                <button className='flex items-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 rounded-[14px] text-white bg-transparent relative overflow-hidden group cursor-pointer'>
-                  <span className='absolute inset-0 rounded-[14px] p-[1.5px] bg-gradient-to-r from-[#2B7FFF] via-[#AD46FF] to-[#F6339A]'>
-                    <span className='flex h-full w-full rounded-[14px] bg-[#091E3E]'></span>
-                  </span>
-                  <span className='relative z-10 flex items-center gap-1.5 text-sm sm:text-base'>
-                    <Info className='w-4 h-4 sm:w-5 sm:h-5' /> Haqqımızda
-                  </span>
-                </button>
-              </Link>
+              <div className='flex items-center gap-2 sm:gap-3'>
+                <Link href="/">
+                  <button className='flex items-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 rounded-[14px] text-gray-400 hover:text-white bg-transparent transition-colors duration-300 hover:bg-white/5'>
+                    <span className='text-sm sm:text-base'>← Əsas</span>
+                  </button>
+                </Link>
+                <Link href="/haqq;mda">
+                  <button className='flex items-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 rounded-[14px] text-white bg-transparent relative overflow-hidden group cursor-pointer'>
+                    <span className='absolute inset-0 rounded-[14px] p-[1.5px] bg-gradient-to-r from-[#2B7FFF] via-[#AD46FF] to-[#F6339A]'>
+                      <span className='flex h-full w-full rounded-[14px] bg-[#091E3E]'></span>
+                    </span>
+                    <span className='relative z-10 flex items-center gap-1.5 text-sm sm:text-base'>
+                      <Info className='w-4 h-4 sm:w-5 sm:h-5' /> Haqqımızda
+                    </span>
+                  </button>
+                </Link>
+              </div>
             )}
           </div>
         </div>
