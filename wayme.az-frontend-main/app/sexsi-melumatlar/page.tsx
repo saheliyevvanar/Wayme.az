@@ -437,7 +437,7 @@ export default function PersonalInfoPage() {
                         <h1 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
                             İş istiqamətinin müəyyən edilməsi
                         </h1>
-                        <span className="text-gray-400 font-medium">Addım 1/6</span>
+                        <span className="text-gray-400 font-medium">Addım 1/4</span>
                     </div>
 
                     {/* Progress Bar */}
