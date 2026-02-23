@@ -1,6 +1,7 @@
 "use client"
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import Footer from '../../Components/Layout/Footer'
 import {
     Award,
@@ -10,7 +11,8 @@ import {
     ArrowLeft,
     Share2,
     Download,
-    FileDown
+    FileDown,
+    X
 } from 'lucide-react'
 
 interface CareerAnalysis {
@@ -116,6 +118,15 @@ export default function ResultPage() {
                 <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
                     <div className="absolute -left-[10%] -top-[10%] h-[40%] w-[40%] rounded-full bg-blue-600/10 blur-[120px] animate-pulse-slow" />
                     <div className="absolute -right-[10%] bottom-[20%] h-[50%] w-[50%] rounded-full bg-purple-600/10 blur-[120px] animate-pulse-slow" />
+                </div>
+
+                {/* Close Button - Top Right */}
+                <div className="absolute top-6 right-6 z-20">
+                    <Link href="/">
+                        <button className='p-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-all duration-300'>
+                            <X size={24} />
+                        </button>
+                    </Link>
                 </div>
 
                 <div className="w-full max-w-[800px] z-10 space-y-6 animate-in fade-in duration-700 slide-in-from-bottom-4">
